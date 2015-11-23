@@ -36,7 +36,7 @@ namespace Util {
 	{
 	public:
 		CurvePoint(Point inputPosition, Vector& inputTangent, float inputTime) : position(inputPosition),
-																tangent(inputTangent), time(inputTime) {}
+			tangent(inputTangent), time(inputTime) {}
 		Point position;
 		Vector tangent;
 		float time;
@@ -106,3 +106,4 @@ namespace Util {
 #endif
 
 #endif
+
