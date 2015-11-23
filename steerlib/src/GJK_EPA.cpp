@@ -11,6 +11,8 @@
 #include <cmath>
 #include "obstacles/GJK_EPA.h"
 
+#define PRINT_TRIANGLES true
+
 SteerLib::GJK_EPA::GJK_EPA()
 {
 }
@@ -311,6 +313,15 @@ void SteerLib::GJK_EPA::FindEars(std::vector<struct triangle>& triangles, std::v
 	struct triangle t = { shape[0], shape[1], shape[2] };
 	triangles.push_back(t);
 
+	if (PRINT_TRIANGLES) {
+		for (int i = 0; i < triangles.size(); i++) {
+			printf("Triangle %d\n", i + 1);
+			printf("<%f, %f, %f> - ", triangles[i].p1.x, triangles[i].p1.y, triangles[i].p1.z);
+			printf("<%f, %f, %f> - ", triangles[i].p2.x, triangles[i].p2.y, triangles[i].p2.z);
+			printf("<%f, %f, %f>\n", triangles[i].p3.x, triangles[i].p3.y, triangles[i].p3.z);
+			printf("**************\n");
+		}
+	}
 }
 
 void SteerLib::GJK_EPA::GetEdges(std::vector<struct triangle>& triangles, const std::vector<Util::Vector>& _shape)
