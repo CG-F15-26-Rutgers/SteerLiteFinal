@@ -11,7 +11,7 @@
 #include <cmath>
 #include "obstacles/GJK_EPA.h"
 
-#define PRINT_TRIANGLES true
+#define PRINT_TRIANGLES false
 
 SteerLib::GJK_EPA::GJK_EPA()
 {
@@ -171,7 +171,65 @@ bool SteerLib::GJK_EPA::GJK(const std::vector<Util::Vector>& _shapeA, const std:
 /*****************************************/
 /****************** EPA ******************/
 /*****************************************/
-// TODO
+Edge SteerLib::GJK_EPA::findClosestEdge(std::vector<Util::Vector> polygon) {
+	// Returns the edge of the polygon which is closest to the origin.
+
+	Edge closest;
+	closest.distance = std::numeric_limits<float>::max();
+
+	for (unsigned int i = 0; i < polygon.size(); ++i) {
+		unsigned int j = (i + 1 == polygon.size()) ? 0 : i + 1;
+
+		Util::Vector a = polygon[i];
+		Util::Vector b = polygon[j];
+		Util::Vector e = b - a;
+		Util::Vector n = TripleProduct(e, a, e);
+		n = Util::normalize(n);
+
+		float d = DotProduct(n, a);
+
+		if (d < closest.distance) {
+			closest.distance = d;
+			closest.normal = n;
+			closest.index = j;
+		}
+	}
+
+	return closest;
+}
+
+void SteerLib::GJK_EPA::EPA(float& return_penetration_depth, Util::Vector& return_penetration_vector, const std::vector<Util::Vector>& _simplex, const std::vector<Util::Vector>& _shapeA, const std::vector<Util::Vector>& _shapeB)
+{
+
+	std::vector<Util::Vector> simplex = _simplex; // Copy the original so we can expand it.
+	Util::Vector normal;
+	Edge closestEdge;
+
+	float epsilon = 0.0001; // Should be a small number.
+
+	while (true)
+	{
+		closestEdge = findClosestEdge(simplex);
+		Util::Vector supportVector = Support(_shapeA, _shapeB, closestEdge.normal);
+
+		float d = DotProduct(supportVector, closestEdge.normal);
+
+		if (d - closestEdge.distance < epsilon)
+		{
+			return_penetration_vector = closestEdge.normal;
+			return_penetration_depth = d;
+			return;
+		}
+
+		else
+			simplex.insert(simplex.begin() + closestEdge.index, supportVector);
+	}
+
+}
+
+
+
+
 
 /***********************************************************/
 /****************** POLYGON TRIANGULATION ******************/
@@ -399,5 +457,24 @@ bool SteerLib::GJK_EPA::Triangulate(const std::vector<Util::Vector>& _shapeA, co
 bool SteerLib::GJK_EPA::intersect(float& return_penetration_depth, Util::Vector& return_penetration_vector, const std::vector<Util::Vector>& _shapeA, const std::vector<Util::Vector>& _shapeB)
 {
 	std::vector<Util::Vector> _simplex;
-	return Triangulate(_shapeA, _shapeB); 
+	bool colliding;
+
+	colliding = Triangulate(_shapeA, _shapeB);
+
+	if (colliding)
+	{
+		EPA(return_penetration_depth, return_penetration_vector, _simplex, _shapeA, _shapeB);
+		return true;
+	}
+	else
+	{
+		return_penetration_depth = 0;
+		return_penetration_vector.zero();
+		return false;
+	}
+
+	// To make compiler happy
+	return false;
+
+	//return Triangulate(_shapeA, _shapeB); 
 }

@@ -14,6 +14,11 @@
 
 #include <vector>
 
+typedef struct Edge {
+            float distance;
+            Util::Vector normal;
+            unsigned int index;
+} Edge;
 
 namespace SteerLib
 {
@@ -29,12 +34,6 @@ namespace SteerLib
 		Util::Vector p2;
 		Util::Vector p3;
 	};
-
-	typedef struct Edge {
-		float distance;
-		Util::Vector normal;
-		unsigned int index;
-	}Edge;
 
 
     class STEERLIB_API GJK_EPA
@@ -162,7 +161,7 @@ namespace SteerLib
 			static void NegateDirection(Util::Vector& d);
 
 			// EPA
-			static Edge FindClosestEdge(std::vector<Util::Vector> polygon);
+			static Edge findClosestEdge(std::vector<Util::Vector> polygon);
 			static void EPA(float& return_penetration_depth, Util::Vector& return_penetration_vector, const std::vector<Util::Vector>& _simplex, const std::vector<Util::Vector>& _shapeA, const std::vector<Util::Vector>& _shapeB);
 
 			// Polygon Triangulation
