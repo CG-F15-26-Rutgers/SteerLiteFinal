@@ -399,6 +399,5 @@ bool SteerLib::GJK_EPA::Triangulate(const std::vector<Util::Vector>& _shapeA, co
 bool SteerLib::GJK_EPA::intersect(float& return_penetration_depth, Util::Vector& return_penetration_vector, const std::vector<Util::Vector>& _shapeA, const std::vector<Util::Vector>& _shapeB)
 {
 	std::vector<Util::Vector> _simplex;
-//	return GJK(_simplex, _shapeA, _shapeB);
 	return Triangulate(_shapeA, _shapeB); 
 }
