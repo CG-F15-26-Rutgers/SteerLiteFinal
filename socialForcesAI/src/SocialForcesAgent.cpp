@@ -758,7 +758,7 @@ bool SocialForcesAgent::runLongTermPlanning()
 
 bool SocialForcesAgent::runLongTermPlanning2()
 {
-
+/* Do we modify this for A*? */
 #ifndef USE_PLANNING
 	return;
 #endif
