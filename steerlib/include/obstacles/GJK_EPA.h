@@ -18,6 +18,25 @@
 namespace SteerLib
 {
 
+	struct edges {
+		Util::Vector point;
+		Util::Vector neighbor1;
+		Util::Vector neighbor2;
+	};
+
+	struct triangle {
+		Util::Vector p1;
+		Util::Vector p2;
+		Util::Vector p3;
+	};
+
+	typedef struct Edge {
+		float distance;
+		Util::Vector normal;
+		unsigned int index;
+	}Edge;
+
+
     class STEERLIB_API GJK_EPA
     {
         public:
@@ -128,9 +147,35 @@ namespace SteerLib
              */
             static bool intersect(float& return_penetration_depth, Util::Vector& return_penetration_vector, const std::vector<Util::Vector>& _shapeA, const std::vector<Util::Vector>& _shapeB);
 
+			
         private:
+			// Math
+			static float DotProduct(Util::Vector A, Util::Vector B);
+			static Util::Vector TripleProduct(Util::Vector A, Util::Vector B, Util::Vector C);
+			static double CheckDirection(std::vector<Util::Vector> shape);
 
-    }; // class GJK_EPA
+			// GJK
+			static bool GJK(const std::vector<Util::Vector>& _shapeA, const std::vector<Util::Vector>& _shapeB, std::vector<Util::Vector>& _simplex);
+			static Util::Vector Support(const std::vector<Util::Vector>& _shapeA, const std::vector<Util::Vector>& _shapeB, Util::Vector d);
+			static int GetFarthest(const std::vector<Util::Vector>& shape, Util::Vector d);
+			static bool Origins(std::vector<Util::Vector>& _simplex, Util::Vector& d);
+			static void NegateDirection(Util::Vector& d);
+
+			// EPA
+			static Edge FindClosestEdge(std::vector<Util::Vector> polygon);
+			static void EPA(float& return_penetration_depth, Util::Vector& return_penetration_vector, const std::vector<Util::Vector>& _simplex, const std::vector<Util::Vector>& _shapeA, const std::vector<Util::Vector>& _shapeB);
+
+			// Polygon Triangulation
+			static bool Triangulate(const std::vector<Util::Vector>& _shapeA, const std::vector<Util::Vector>& _shapeB);
+			static void GetEdges(std::vector<struct triangle>& triangles, const std::vector<Util::Vector>& shape);
+			static void FindEars(std::vector<struct triangle>& triangles, std::vector<Util::Vector> shape, std::vector<struct edges> edges);
+			static Util::Vector Midpoint(Util::Vector p1, Util::Vector p2);
+			static void RemovePoint(std::vector<Util::Vector>& shape, Util::Vector point);
+			static void RemoveEdge(std::vector<struct edges>& edges, Util::Vector point);
+			static void UpdateEars(std::queue<Util::Vector>& ears, std::vector<struct edges> edges, std::vector<Util::Vector> shape);
+			static bool EarCheck(std::queue<Util::Vector> ears, Util::Vector ear);
+
+ }; // class GJK_EPA
 
 } // namespace SteerLib
 
