@@ -12,6 +12,7 @@
 #include "obstacles/GJK_EPA.h"
 
 #define PRINT_TRIANGLES false
+#define CONCAVE_POLYGONS true
 
 SteerLib::GJK_EPA::GJK_EPA()
 {
@@ -453,12 +454,50 @@ bool SteerLib::GJK_EPA::Triangulate(const std::vector<Util::Vector>& _shapeA, co
 	return false;
 }
 
+// Returns true if convex polygon
+// TODO
+bool PolygonCheck(const std::vector<Util::Vector> shape)
+{
+	if (shape.size() < 4) {
+		return true;
+	}
+
+	bool sign = false;
+	int n = shape.size();
+	for (int i = 0; i < n; i++) {
+		double dx1 = shape[(i + 2) % n].x - shape[(i + 1) % n].x;
+		double dz1 = shape[(i + 2) % n].z - shape[(i + 1) % n].z;
+		double dx2 = shape[i].x - shape[i + 1].x;
+		double dz2 = shape[i].z - shape[i + 1].z;
+		double cross = dx1*dz2 - dz1*dx2;
+
+		if (i == 0) {
+			sign = cross > 0;
+		}
+		else {
+			if (sign != (cross > 0)) {
+				printf("CONCAVE\n");
+				return false;
+			}
+		}
+
+		printf("CONVEX\n");
+		return true;
+	}
+
+	// Makes compiler happy
+	return false;
+}
+
 //Look at the GJK_EPA.h header file for documentation and instructions
 bool SteerLib::GJK_EPA::intersect(float& return_penetration_depth, Util::Vector& return_penetration_vector, const std::vector<Util::Vector>& _shapeA, const std::vector<Util::Vector>& _shapeB)
 {
+	if (CONCAVE_POLYGONS)
+		return Triangulate(_shapeA, _shapeB);
+	
 	std::vector<Util::Vector> _simplex;
 	bool colliding;
-
+	
 	colliding = Triangulate(_shapeA, _shapeB);
 
 	if (colliding)
@@ -475,6 +514,4 @@ bool SteerLib::GJK_EPA::intersect(float& return_penetration_depth, Util::Vector&
 
 	// To make compiler happy
 	return false;
-
-	//return Triangulate(_shapeA, _shapeB); 
 }
