@@ -120,6 +120,22 @@ private:
 	// holds the location of the best local target along the midtermpath
 	Util::Point _currentLocalTarget;
 
+
+	void firstAI();
+	void secondAI();
+	void thirdAI();
+	void fourthAI();
+	void fifthAI();
+	void sixthAI();
+	void seventhAI();
+	void eighthAI();
+	void ninthAI();
+	void tenthAI();
+	void eleventhAI();
+	void LoadAI(std::string testcase);
+
+
+
 	friend class SocialForcesAIModule;
 
 #ifdef DRAW_HISTORIES

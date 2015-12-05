@@ -68,6 +68,11 @@ void SocialForcesAgent::disable()
 
 void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialConditions, SteerLib::EngineInterface * engineInfo)
 {
+
+	std::string testcase = (*engineInfo->getModuleOptions("testCasePlayer").find("testcase")).second;
+	LoadAI(testcase);
+
+
     // compute the "old" bounding box of the agent before it is reset.  its OK that it will be invalid if the agent was previously disabled because the value is not used in that case.
     _waypoints.clear();
     _midTermPath.clear();
@@ -754,4 +759,106 @@ void SocialForcesAgent::draw()
 #endif
 
 #endif
+}
+
+
+
+
+
+
+void SocialForcesAgent::LoadAI(std::string testcase)
+{
+	if (testcase == "plane_egress") {
+		firstAI();
+	}
+	else if (testcase == "plane_ingress") {
+		secondAI();
+	}
+	else if (testcase == "crowd_crossing") {
+		thirdAI();
+	}
+	else if (testcase == "office-complex") {
+		fourthAI();
+	}
+	else if (testcase == "hallway-four-way-rounded-roundabout") {
+		fifthAI();
+	}
+	else if (testcase == "bottleneck-squeeze") {
+		sixthAI();
+	}
+	else if (testcase == "doorway-two-way") {
+		seventhAI();
+	}
+	else if (testcase == "double-squeeze") {
+		eighthAI();
+	}
+	else if (testcase == "wall-squeeze") {
+		ninthAI();
+	}
+	else if (testcase == "hallway-two-way") {
+		tenthAI();
+	}
+	else if (testcase == "maze") {
+		eleventhAI();
+	}
+	else {
+		printf("WE WERE NOT READY FOR THIS\n");
+	}
+}
+
+
+/**********************************************/
+/**********************************************/
+/**********************************************/
+/**********************************************/
+/*
+		TESTCASE AI's
+*/
+/**********************************************/
+/**********************************************/
+/**********************************************/
+/**********************************************/
+
+void SocialForcesAgent::firstAI() {
+	printf("plane_egress\n");
+}
+
+void SocialForcesAgent::secondAI() {
+	printf("plane_egress\n");
+}
+
+void SocialForcesAgent::thirdAI() {
+	printf("plane_egress\n");
+}
+
+void SocialForcesAgent::fourthAI() {
+	printf("plane_egress\n");
+}
+
+void SocialForcesAgent::fifthAI() {
+	printf("plane_egress\n");
+}
+
+void SocialForcesAgent::sixthAI() {
+	printf("plane_egress\n");
+}
+
+void SocialForcesAgent::seventhAI() {
+	printf("plane_egress\n");
+}
+
+void SocialForcesAgent::eighthAI() {
+	printf("plane_egress\n");
+}
+
+void SocialForcesAgent::ninthAI() {
+	printf("plane_egress\n");
+}
+
+void SocialForcesAgent::tenthAI() {
+	printf("plane_egress\n");
+}
+
+void SocialForcesAgent::eleventhAI() {
+	printf("plane_egress\n");
 }
