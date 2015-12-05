@@ -762,10 +762,9 @@ void SocialForcesAgent::draw()
 }
 
 
-
-
-
-
+/*
+	Checks the testcase and loads the ai based on it
+*/
 void SocialForcesAgent::LoadAI(std::string testcase)
 {
 	if (testcase == "plane_egress") {
