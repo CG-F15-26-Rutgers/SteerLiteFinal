@@ -68,10 +68,8 @@ void SocialForcesAgent::disable()
 
 void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialConditions, SteerLib::EngineInterface * engineInfo)
 {
-
 	std::string testcase = (*engineInfo->getModuleOptions("testCasePlayer").find("testcase")).second;
 	LoadAI(testcase);
-
 
     // compute the "old" bounding box of the agent before it is reset.  its OK that it will be invalid if the agent was previously disabled because the value is not used in that case.
     _waypoints.clear();
@@ -110,13 +108,27 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
     while (!_goalQueue.empty())
         _goalQueue.pop();
 
-    computePlan(_position, initialConditions.goals.back().targetLocation);
+	Util::Point startingPoint = _position;
+	for (unsigned int i = 0; i < initialConditions.goals.size(); ++i){
+		Util::Point goalPoint = initialConditions.goals[i].targetLocation;
+		computePlan(startingPoint, goalPoint);
+		startingPoint = goalPoint;
+	}
 
-    runLongTermPlanning();
+	// Possibly merge this loop with the above one?
+	std::queue<SteerLib::AgentGoalInfo> goalQueueCopy = _goalQueue;
+	for (unsigned int i = 0; i < _goalQueue.size(); ++i){
+		_midTermPath.push_back(_goalQueue.front().targetLocation);
+		_goalQueue.pop();
+	}
+
+	_goalQueue = goalQueueCopy;
+
+	std::cout << "Goal queue size: " << _goalQueue.size();
+	std::cout << "\n Initial conditions goals size: " << initialConditions.goals.size();
 
     /* Must make sure that _waypoints.front() != position(). If they are equal the agent will crash.
-     * And that _waypoints is not empty
-     */
+     * And that _waypoints is not empty */
     Util::Vector goalDirection;
     if (!_midTermPath.empty()){
         this->updateLocalTarget();
@@ -567,8 +579,7 @@ void SocialForcesAgent::updateLocalTarget()
     Util::Point tmpTarget = this->_goalQueue.front().targetLocation;
     unsigned int i=0;
     for (i=0; (i < FURTHEST_LOCAL_TARGET_DISTANCE) &&
-            i < this->_midTermPath.size(); i++ )
-    {
+			 i < this->_midTermPath.size(); i++){
         tmpTarget = this->_midTermPath.at(i);
         if ( this->hasLineOfSightTo(tmpTarget) )
         {
@@ -622,7 +633,7 @@ bool SocialForcesAgent::runLongTermPlanning2()
     }
 
     if ( !gSpatialDatabase->findSmoothPath(pos, _goalQueue.front().targetLocation,
-            agentPath, (unsigned int) 50000))
+										   agentPath, (unsigned int) 50000))
     {
         return false;
     }
