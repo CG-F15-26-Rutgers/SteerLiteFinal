@@ -68,10 +68,7 @@ void SocialForcesAgent::disable()
 
 void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialConditions, SteerLib::EngineInterface * engineInfo)
 {
-    std::string testcase = (*engineInfo->getModuleOptions("testCasePlayer").find("testcase")).second;
-    LoadAI(testcase);
-
-    // compute the "old" bounding box of the agent before it is reset.  its OK that it will be invalid if the agent was previously disabled because the value is not used in that case.
+	 // compute the "old" bounding box of the agent before it is reset.  its OK that it will be invalid if the agent was previously disabled because the value is not used in that case.
     _waypoints.clear();
     _midTermPath.clear();
 
@@ -123,6 +120,12 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
     }
 
     _goalQueue = goalQueueCopy;
+	std::string testcase = (*engineInfo->getModuleOptions("testCasePlayer").find("testcase")).second;
+	LoadAI(testcase);
+
+
+
+    computePlan(_position, initialConditions.goals.back().targetLocation);
 
     std::cout << "Goal queue size: " << _goalQueue.size();
     std::cout << "\n Initial conditions goals size: " << initialConditions.goals.size();
@@ -829,46 +832,69 @@ void SocialForcesAgent::LoadAI(std::string testcase)
 /**********************************************/
 /**********************************************/
 
+// plane_egress
 void SocialForcesAgent::firstAI() {
-    printf("plane_egress\n");
+	// bunch of agents try to get out 
+	printf("plane_egress\n");
 }
 
+// plane_ingress
 void SocialForcesAgent::secondAI() {
-    printf("plane_egress\n");
+	// bunch of agents try to get in
+	printf("plane_ingress\n");
 }
 
+// crowd_crossing
 void SocialForcesAgent::thirdAI() {
-    printf("plane_egress\n");
+	// big agent trying to cross a one way street
+	printf("crowd_crossing\n");
 }
 
+// office-complex
 void SocialForcesAgent::fourthAI() {
-    printf("plane_egress\n");
+	// bunch of agents try to get out of the office
+	printf("office-complex\n");
 }
 
+// hallway-four-way-rounded-roundabout
 void SocialForcesAgent::fifthAI() {
-    printf("plane_egress\n");
+	// polygon at center and agents are trying going in multiple directions
+	printf("hallway-four-way-rounded-roundabout\n");
 }
 
+// bottleneck-squeeze
 void SocialForcesAgent::sixthAI() {
-    printf("plane_egress\n");
+	// bunch of agents trying to get through one entrance
+	printf("bottleneck-squeeze\n");
 }
 
+// doorway-two-way
 void SocialForcesAgent::seventhAI() {
-    printf("plane_egress\n");
+	// two agents try to get through same entrance 
+	printf("doorway-two-way\n");
 }
 
+// double-squeeze
 void SocialForcesAgent::eighthAI() {
-    printf("plane_egress\n");
+	// four agents try to get by each other
+	printf("double-squeeze\n");
 }
 
+// wall-squeeze
 void SocialForcesAgent::ninthAI() {
-    printf("plane_egress\n");
+	// basically previous test case but there's now a wall and three agents
+	printf("wall-squeeze\n");
 }
 
+// hallway-two-way
 void SocialForcesAgent::tenthAI() {
-    printf("plane_egress\n");
+	// bunch of agents going two different directions
+	// sf + astar should work
+	printf("hallway-two-way\n");
 }
 
+// maze
 void SocialForcesAgent::eleventhAI() {
-    printf("plane_egress\n");
+	// should run astar here
+	printf("maze\n");
 }
