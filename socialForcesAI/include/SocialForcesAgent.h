@@ -17,9 +17,8 @@
 #include <queue>
 #include <list>
 #include "SteerLib.h"
-// #include "SimpleAgent.h"
-// #include "SocialForcesAIModule.h"
 #include "SocialForces_Parameters.h"
+#include "planning/AStarPlanner.h"
 
 
 /**
@@ -28,14 +27,7 @@
 *
 */
 
-
-// #define DRAW_ANNOTATIONS 1
-// #define DRAW_HISTORIES 1
-// #define DRAW_COLLISIONS 1
-
-
-class SocialForcesAgent : public SteerLib::AgentInterface
-{
+class SocialForcesAgent : public SteerLib::AgentInterface{
 public:
 	SocialForcesAgent();
 	~SocialForcesAgent();
@@ -64,15 +56,18 @@ public:
 	float computePenetration(const Util::Point & p, float radius) { return Util::computeCircleCirclePenetration2D(_position, _radius, p, radius); }
 	//@}
 
-	// bool collidesAtTimeWith(const Util::Point & p1, const Util::Vector & rightSide, float otherAgentRadius, float timeStamp, float footX, float footZ);
 	void insertAgentNeighbor(const SteerLib::AgentInterface * agent, float &rangeSq) { throw Util::GenericException("clearGoals() not implemented yet for SimpleAgent"); }
-	// bool compareDist(SteerLib::AgentInterface * a1, SteerLib::AgentInterface * a2 );
+
+	void computePlan(Util::Point startPoint, Util::Point goalPoint);
+	SteerLib::AStarPlanner astar;
 
 protected:
-	/// Updates position, velocity, and orientation of the agent, given the force and dt time step.
-	// void _doEulerStep(const Util::Vector & steeringDecisionForce, float dt);
+	// Updates position, velocity, and orientation of the agent, given the force and dt time step.
 
 	SocialForcesParameters _SocialForcesParams;
+
+	// For the A* search
+	std::vector<Util::Point> __path;
 
 	/**
 	* \brief   Updates the three-dimensional position and three-dimensional velocity of this agent.
@@ -93,14 +88,13 @@ protected:
 
 	// Stuff specific to RVO
 	// should be normalized
-	// Util::Vector prefVelocity_; // This is the velocity the agent wants to be at
-	// Util::Vector newVelocity_;
 	size_t id_;
 	SteerLib::ModuleInterface * rvoModule;
 
 	// Used to store Waypoints between goals
-	// A waypoint is choosen every FURTHEST_LOCAL_TARGET_DISTANCE
+	// A waypoint is chosen every FURTHEST_LOCAL_TARGET_DISTANCE
 	std::vector<Util::Point> _waypoints;
+	int last_waypoint=0;
 
 private:
 	bool runLongTermPlanning2();
@@ -108,7 +102,6 @@ private:
 	bool reachedCurrentWaypoint();
 	void updateMidTermPath();
 	bool hasLineOfSightTo(Util::Point point);
-
 
 	void calcNextStep(float dt);
 	Util::Vector calcRepulsionForce(float dt);
