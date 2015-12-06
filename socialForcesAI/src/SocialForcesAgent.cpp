@@ -128,36 +128,38 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
 		}
 	}
 
-	if (testcase == "maze") {
+	LoadAI(testcase);
+
+	/* if (testcase == "maze") {
+		printf("Run ASTAR\n");
 		AStar();
-		/*
-		Util::Point startingPoint = _position;
-		for (unsigned int i = 0; i < initialConditions.goals.size(); ++i) {
-			Util::Point goalPoint = initialConditions.goals[i].targetLocation;
-			computePlan(startingPoint, goalPoint);
-			startingPoint = goalPoint;
-		}
+		
+		//Util::Point startingPoint = _position;
+		//for (unsigned int i = 0; i < initialConditions.goals.size(); ++i) {
+		//	Util::Point goalPoint = initialConditions.goals[i].targetLocation;
+		//	computePlan(startingPoint, goalPoint);
+		//	startingPoint = goalPoint;
+		//}
 
 		// Possibly merge this loop with the above one?
-		std::queue<SteerLib::AgentGoalInfo> goalQueueCopy = _goalQueue;
-		for (unsigned int i = 0; i < _goalQueue.size(); ++i) {
-			_midTermPath.push_back(_goalQueue.front().targetLocation);
-			_goalQueue.pop();
-		}
+		//std::queue<SteerLib::AgentGoalInfo> goalQueueCopy = _goalQueue;
+		//for (unsigned int i = 0; i < _goalQueue.size(); ++i) {
+		//	_midTermPath.push_back(_goalQueue.front().targetLocation);
+		//	_goalQueue.pop();
+		//}
 
-		_goalQueue = goalQueueCopy;
+		//_goalQueue = goalQueueCopy;
 
+		//computePlan(_position, initialConditions.goals.back().targetLocation);
 
-
-		computePlan(_position, initialConditions.goals.back().targetLocation);
-
-		std::cout << "Goal queue size: " << _goalQueue.size();
-		std::cout << "\n Initial conditions goals size: " << initialConditions.goals.size();
-		*/
-	}
+		//std::cout << "Goal queue size: " << _goalQueue.size();
+		//std::cout << "\n Initial conditions goals size: " << initialConditions.goals.size();
+		
+	 }
 	else {
+		printf("Run LongTermPlan\n");
 		runLongTermPlanning();
-	}
+	}*/
 
 
     /* Must make sure that _waypoints.front() != position(). If they are equal the agent will crash.
@@ -814,44 +816,44 @@ void SocialForcesAgent::draw()
 /*
     Checks the testcase and loads the ai based on it
 */
-void SocialForcesAgent::LoadAI(std::string testcase)
+bool SocialForcesAgent::LoadAI(std::string testcase)
 {
     if (testcase == "plane_egress") {
-        firstAI();
+        return firstAI();
     }
     else if (testcase == "plane_ingress") {
-        secondAI();
+		return secondAI();
     }
     else if (testcase == "crowd_crossing") {
-        thirdAI();
+		return thirdAI();
     }
     else if (testcase == "office-complex") {
-        fourthAI();
+		return fourthAI();
     }
     else if (testcase == "hallway-four-way-rounded-roundabout") {
-        fifthAI();
+		return fifthAI();
     }
     else if (testcase == "bottleneck-squeeze") {
-        sixthAI();
+		return sixthAI();
     }
     else if (testcase == "doorway-two-way") {
-        seventhAI();
+		return seventhAI();
     }
     else if (testcase == "double-squeeze") {
-        eighthAI();
+		return eighthAI();
     }
     else if (testcase == "wall-squeeze") {
-        ninthAI();
+		return ninthAI();
     }
     else if (testcase == "hallway-two-way") {
-        tenthAI();
+		return tenthAI();
     }
     else if (testcase == "maze") {
-        eleventhAI();
+		return eleventhAI();
     }
     else {
         printf("WE WERE NOT READY FOR THIS\n");
-    }
+	}
 }
 
 
@@ -868,70 +870,92 @@ void SocialForcesAgent::LoadAI(std::string testcase)
 /**********************************************/
 
 // plane_egress
-void SocialForcesAgent::firstAI() {
+bool SocialForcesAgent::firstAI() {
 	// bunch of agents try to get out 
 	printf("plane_egress\n");
+
+	return runLongTermPlanning();
 }
 
 // plane_ingress
-void SocialForcesAgent::secondAI() {
+bool SocialForcesAgent::secondAI() {
 	// bunch of agents try to get in
 	printf("plane_ingress\n");
+
+	return runLongTermPlanning;
 }
 
 // crowd_crossing
-void SocialForcesAgent::thirdAI() {
+bool SocialForcesAgent::thirdAI() {
 	// big agent trying to cross a one way street
 	printf("crowd_crossing\n");
+
+	return runLongTermPlanning;
 }
 
 // office-complex
-void SocialForcesAgent::fourthAI() {
+bool SocialForcesAgent::fourthAI() {
 	// bunch of agents try to get out of the office
 	printf("office-complex\n");
+	
+	return runLongTermPlanning;
 }
 
 // hallway-four-way-rounded-roundabout
-void SocialForcesAgent::fifthAI() {
+bool SocialForcesAgent::fifthAI() {
 	// polygon at center and agents are trying going in multiple directions
 	printf("hallway-four-way-rounded-roundabout\n");
+
+	return runLongTermPlanning;
 }
 
 // bottleneck-squeeze
-void SocialForcesAgent::sixthAI() {
+bool SocialForcesAgent::sixthAI() {
 	// bunch of agents trying to get through one entrance
 	printf("bottleneck-squeeze\n");
+
+	return runLongTermPlanning;
 }
 
 // doorway-two-way
-void SocialForcesAgent::seventhAI() {
+bool SocialForcesAgent::seventhAI() {
 	// two agents try to get through same entrance 
 	printf("doorway-two-way\n");
+
+	return runLongTermPlanning;
 }
 
 // double-squeeze
-void SocialForcesAgent::eighthAI() {
+bool SocialForcesAgent::eighthAI() {
 	// four agents try to get by each other
 	printf("double-squeeze\n");
+
+	return runLongTermPlanning;
 }
 
 // wall-squeeze
-void SocialForcesAgent::ninthAI() {
+bool SocialForcesAgent::ninthAI() {
 	// basically previous test case but there's now a wall and three agents
 	printf("wall-squeeze\n");
+
+	return runLongTermPlanning;
 }
 
 // hallway-two-way
-void SocialForcesAgent::tenthAI() {
+bool SocialForcesAgent::tenthAI() {
 	// bunch of agents going two different directions
 	// sf + astar should work
 	printf("hallway-two-way\n");
+
+	return runLongTermPlanning;
 }
 
 // maze
-void SocialForcesAgent::eleventhAI() {
+bool SocialForcesAgent::eleventhAI() {
 	// should run astar here
 	printf("maze\n");
+
+	return AStar();
 }
 
 bool SocialForcesAgent::AStar()

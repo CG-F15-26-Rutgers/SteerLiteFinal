@@ -123,18 +123,18 @@ private:
 	Util::Point _currentLocalTarget;
 
 
-	void firstAI();
-	void secondAI();
-	void thirdAI();
-	void fourthAI();
-	void fifthAI();
-	void sixthAI();
-	void seventhAI();
-	void eighthAI();
-	void ninthAI();
-	void tenthAI();
-	void eleventhAI();
-	void LoadAI(std::string testcase);
+	bool firstAI();
+	bool secondAI();
+	bool thirdAI();
+	bool fourthAI();
+	bool fifthAI();
+	bool sixthAI();
+	bool seventhAI();
+	bool eighthAI();
+	bool ninthAI();
+	bool tenthAI();
+	bool eleventhAI();
+	bool LoadAI(std::string testcase);
 
 
 
