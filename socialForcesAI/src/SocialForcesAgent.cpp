@@ -105,30 +105,60 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
     while (!_goalQueue.empty())
         _goalQueue.pop();
 
-    Util::Point startingPoint = _position;
-    for (unsigned int i = 0; i < initialConditions.goals.size(); ++i){
-        Util::Point goalPoint = initialConditions.goals[i].targetLocation;
-        computePlan(startingPoint, goalPoint);
-        startingPoint = goalPoint;
-    }
 
-    // Possibly merge this loop with the above one?
-    std::queue<SteerLib::AgentGoalInfo> goalQueueCopy = _goalQueue;
-    for (unsigned int i = 0; i < _goalQueue.size(); ++i){
-        _midTermPath.push_back(_goalQueue.front().targetLocation);
-        _goalQueue.pop();
-    }
 
-    _goalQueue = goalQueueCopy;
+
 	std::string testcase = (*engineInfo->getModuleOptions("testCasePlayer").find("testcase")).second;
-	LoadAI(testcase);
+
+	// iterate over the sequence of goals specified by the initial conditions.
+	for (unsigned int i = 0; i<initialConditions.goals.size(); i++) {
+		if (initialConditions.goals[i].goalType == SteerLib::GOAL_TYPE_SEEK_STATIC_TARGET ||
+			initialConditions.goals[i].goalType == GOAL_TYPE_AXIS_ALIGNED_BOX_GOAL)
+		{
+			_goalQueue.push(initialConditions.goals[i]);
+			if (initialConditions.goals[i].targetIsRandom)
+			{
+				// if the goal is random, we must randomly generate the goal.
+				// std::cout << "assigning random goal" << std::endl;
+				_goalQueue.back().targetLocation = gSpatialDatabase->randomPositionWithoutCollisions(1.0f, true);
+			}
+		}
+		else {
+			throw Util::GenericException("Unsupported goal type; SocialForcesAgent only supports GOAL_TYPE_SEEK_STATIC_TARGET and GOAL_TYPE_AXIS_ALIGNED_BOX_GOAL.");
+		}
+	}
+
+	if (testcase == "maze") {
+		AStar();
+		/*
+		Util::Point startingPoint = _position;
+		for (unsigned int i = 0; i < initialConditions.goals.size(); ++i) {
+			Util::Point goalPoint = initialConditions.goals[i].targetLocation;
+			computePlan(startingPoint, goalPoint);
+			startingPoint = goalPoint;
+		}
+
+		// Possibly merge this loop with the above one?
+		std::queue<SteerLib::AgentGoalInfo> goalQueueCopy = _goalQueue;
+		for (unsigned int i = 0; i < _goalQueue.size(); ++i) {
+			_midTermPath.push_back(_goalQueue.front().targetLocation);
+			_goalQueue.pop();
+		}
+
+		_goalQueue = goalQueueCopy;
 
 
 
-    computePlan(_position, initialConditions.goals.back().targetLocation);
+		computePlan(_position, initialConditions.goals.back().targetLocation);
 
-    std::cout << "Goal queue size: " << _goalQueue.size();
-    std::cout << "\n Initial conditions goals size: " << initialConditions.goals.size();
+		std::cout << "Goal queue size: " << _goalQueue.size();
+		std::cout << "\n Initial conditions goals size: " << initialConditions.goals.size();
+		*/
+	}
+	else {
+		runLongTermPlanning();
+	}
+
 
     /* Must make sure that _waypoints.front() != position(). If they are equal the agent will crash.
      * And that _waypoints is not empty */
@@ -598,23 +628,28 @@ void SocialForcesAgent::updateLocalTarget()
  */
 bool SocialForcesAgent::runLongTermPlanning()
 {
-    _midTermPath.clear();
-    //==========================================================================
+	_midTermPath.clear();
+	//==========================================================================
 
-    // run the main a-star search here
-    std::vector<Util::Point> agentPath;
-    Util::Point pos =  position();
+	// run the main a-star search here
+	std::vector<Util::Point> agentPath;
+	Util::Point pos = position();
 
-    if (!gSpatialDatabase->findPath(pos, _goalQueue.front().targetLocation, agentPath, (unsigned int) 50000))
-        return false;
+	if (!gSpatialDatabase->findPath(pos, _goalQueue.front().targetLocation,
+		agentPath, (unsigned int)50000))
+	{
+		return false;
+	}
 
-    for (int i=1; i < agentPath.size(); i++){
-        _midTermPath.push_back(agentPath.at(i));
-        if ((i % FURTHEST_LOCAL_TARGET_DISTANCE) == 0)
-            _waypoints.push_back(agentPath.at(i));
-    }
-
-    return true;
+	for (int i = 1; i < agentPath.size(); i++)
+	{
+		_midTermPath.push_back(agentPath.at(i));
+		if ((i % FURTHEST_LOCAL_TARGET_DISTANCE) == 0)
+		{
+			_waypoints.push_back(agentPath.at(i));
+		}
+	}
+	return true;
 }
 
 
@@ -897,4 +932,32 @@ void SocialForcesAgent::tenthAI() {
 void SocialForcesAgent::eleventhAI() {
 	// should run astar here
 	printf("maze\n");
+}
+
+bool SocialForcesAgent::AStar()
+{
+	_midTermPath.clear();
+
+	std::vector<Util::Point> agentPath;
+	Util::Point pos = position();
+
+	if (!astar.computePath(agentPath, pos, _goalQueue.front().targetLocation, gSpatialDatabase)) {
+		return false;
+	}
+
+	for (int i = 1; i < agentPath.size(); i++) {
+		_midTermPath.push_back(agentPath.at(i));
+
+		if ((i % FURTHEST_LOCAL_TARGET_DISTANCE) == 0) {
+			_waypoints.push_back(agentPath.at(i));
+		}
+	}
+
+	if (agentPath.size() > 0) {
+		for (int i = 1; i < agentPath.size(); ++i) {
+			Util::DrawLib::drawLine(agentPath[i - 1], agentPath[i], Util::Color(1.0f, 0.0f, 0.0f), 2);
+		}
+	}
+
+	return true;
 }

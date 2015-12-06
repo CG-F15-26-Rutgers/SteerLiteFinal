@@ -59,6 +59,8 @@ public:
 	void insertAgentNeighbor(const SteerLib::AgentInterface * agent, float &rangeSq) { throw Util::GenericException("clearGoals() not implemented yet for SimpleAgent"); }
 
 	void computePlan(Util::Point startPoint, Util::Point goalPoint);
+
+	bool AStar();
 	SteerLib::AStarPlanner astar;
 
 protected:
