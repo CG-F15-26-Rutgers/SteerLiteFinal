@@ -123,13 +123,13 @@ private:
 	Util::Point _currentLocalTarget;
 
 
-	bool firstAI();
+	bool firstAI(const SteerLib::AgentInitialConditions & initialConditions);
 	bool secondAI();
-	bool thirdAI();
+	bool thirdAI(const SteerLib::AgentInitialConditions & initialConditions);
 	bool fourthAI();
 	bool fifthAI();
 	bool sixthAI();
-	bool seventhAI();
+	bool seventhAI(const SteerLib::AgentInitialConditions & initialConditions);
 	bool eighthAI(const SteerLib::AgentInitialConditions & initialConditions);
 	bool ninthAI();
 	bool tenthAI();

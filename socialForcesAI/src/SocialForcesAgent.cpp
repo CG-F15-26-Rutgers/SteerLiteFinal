@@ -112,6 +112,7 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
 
 	std::string testcase = (*engineInfo->getModuleOptions("testCasePlayer").find("testcase")).second;
 
+	printf("NAME: %s\n", initialConditions.name);
 
 	// iterate over the sequence of goals specified by the initial conditions.
 	for (unsigned int i = 0; i<initialConditions.goals.size(); i++) {
@@ -132,13 +133,13 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
 	}
 
 	if (testcase == "plane_egress") {
-		firstAI();
+		firstAI(initialConditions);
 	}
 	else if (testcase == "plane_ingress") {
 		secondAI();
 	}
 	else if (testcase == "crowd_crossing") {
-		thirdAI();
+		thirdAI(initialConditions);
 	}
 	else if (testcase == "office-complex") {
 		fourthAI();
@@ -150,7 +151,7 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
 		sixthAI();
 	}
 	else if (testcase == "doorway-two-way") {
-		seventhAI();
+		seventhAI(initialConditions);
 	}
 	else if (testcase == "double-squeeze") {
 		eighthAI(initialConditions);
@@ -865,7 +866,7 @@ void SocialForcesAgent::draw()
 /**********************************************/
 
 // plane_egress
-bool SocialForcesAgent::firstAI() {
+bool SocialForcesAgent::firstAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// bunch of agents try to get out 
 	std::vector<Util::Point> agentPath;
 	runLongTermPlanning();
@@ -882,9 +883,24 @@ bool SocialForcesAgent::secondAI() {
 }
 
 // crowd_crossing
-bool SocialForcesAgent::thirdAI() {
+bool SocialForcesAgent::thirdAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// big agent trying to cross a one way street
 	printf("crowd_crossing\n");
+
+	if (initialConditions.name == "A") {
+		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(position().x, 0, -80);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(position().x, 0, -20);
+		_goalQueue.push(goal);
+		_goalQueue.push(goalPoint);
+
+		runLongTermPlanning();
+
+		return true;
+	}
 
 	return runLongTermPlanning();
 }
@@ -914,50 +930,41 @@ bool SocialForcesAgent::sixthAI() {
 }
 
 // doorway-two-way
-bool SocialForcesAgent::seventhAI() {
+bool SocialForcesAgent::seventhAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// two agents try to get through same entrance 
 	printf("doorway-two-way\n");
 
-	if (position().x == 10) {
-		return AStar();
+	// bottom agent
+	if (initialConditions.name == "A") {
+		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(0, 0, .2);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(3, 0, .2);
+		_goalQueue.push(goal);
+		_goalQueue.push(goalPoint);
+
+		return runLongTermPlanning();
 	}
-	else {
-		std::vector<Util::Point> agentPath;
+	// top agent
+	else if (initialConditions.name == "B") {
+		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(15, 0, 1);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(15, 0, 2);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(2, 0, 2);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(0, 0, .2);
+		_goalQueue.push(goal);
+		_goalQueue.push(goalPoint);
 
-		agentPath.push_back(Point(-9, 0, 2));
-		agentPath.push_back(Point(-8, 0, 2));
-		agentPath.push_back(Point(-7, 0, 2));
-		agentPath.push_back(Point(-6, 0, 2));
-		agentPath.push_back(Point(-5, 0, 2));
-		agentPath.push_back(Point(-4, 0, 2));
-		agentPath.push_back(Point(-3, 0, 2));
-		agentPath.push_back(Point(-2, 0, 2));
-		agentPath.push_back(Point(-1, 0, 2));
-		agentPath.push_back(Point(-0, 0, 2));
-
-		for (int i = 0; i < agentPath.size(); i++)
-		{
-			_midTermPath.push_back(agentPath.at(i));
-			if ((i % FURTHEST_LOCAL_TARGET_DISTANCE) == 0)
-			{
-				_waypoints.push_back(agentPath.at(i));
-			}
-		}
-		if (agentPath.size()>0)
-		{
-			for (int i = 1; i<agentPath.size(); ++i)
-			{
-				Util::DrawLib::drawLine(agentPath[i - 1], agentPath[i], gYellow);
-			}
-			//Util::DrawLib::drawCircle(__path[__path.size()-1], Util::Color(0.0f, 1.0f, 0.0f));
-		}
-
-
-
-		return  true;//runLongTermPlanning();
+		return runLongTermPlanning();
 	}
 
-	//return runLongTermPlanning();
 }
 
 // double-squeeze
