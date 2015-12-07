@@ -875,7 +875,6 @@ bool SocialForcesAgent::secondAI() {
 }
 
 // crowd_crossing
-// stuff here
 // TODO
 bool SocialForcesAgent::thirdAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// big agent trying to cross a one way street
@@ -928,7 +927,354 @@ bool SocialForcesAgent::sixthAI() {
 
 	// sort by quadrant
 
+	if (position().z > 2.1) {
+		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(90, 0, position().z);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(90, 0, -30);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(60, 0, -30);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(60, 0, -50);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(90, 0, -50);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(90, 0, -70);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(23, 0, -70);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(23, 0, 0);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+	else {
+
+		return runLongTermPlanning();
+	}
+
+	/* CLOSE 
+	if (position().z > 2.1) {
+		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(position().x, 0, 90);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(90, 0, 90);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(90, 0, -90);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(23, 0, -90);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(23, 0, 0);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+	else  {
+		
+		if (position().x < 45) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(position().x, 0, 0);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+			return runLongTermPlanning();
+		}
+
+		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(70, 0, position().z);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(70, 0, -90);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(23, 0, -90);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(23, 0, -20);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(70, 0, -20);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(70, 0, 0);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+
+	SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+	_goalQueue.pop();
+	SteerLib::AgentGoalInfo goal;
+	goal.targetLocation = Point(position().x, 0, 0);
+	_goalQueue.push(goal);
+	_goalQueue.push(originalgoal);
 	return runLongTermPlanning();
+
+	*/
+	/*
+	// LEFT 
+	if (position().z > 2.1) {
+		if (position().x < 35) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(position().x, 0, 55);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, 55);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, 1);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 50) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(position().x, 0, 60);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(40, 0, 60);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(40, 0, 1);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 65) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(position().x, 0, 70);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(55, 0, 70);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(55, 0, 1);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 80) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(position().x, 0, 80);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(70, 0, 80);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(70, 0, 1);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+
+		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(position().x, 0, 90);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(90, 0, 90);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(90, 0, 1);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+	// RIGHT
+	else if (position().z < -2.1) {
+		if (position().x < 35) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(position().x, 0, -55);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, -55);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, -1);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 50) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(position().x, 0, -60);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(40, 0, -60);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(40, 0, -1);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 65) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(position().x, 0, -70);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(55, 0, -70);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(55, 0, -1);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 80) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(position().x, 0, -80);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(70, 0, -80);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(70, 0, -1);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+
+		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(position().x, 0, -90);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(90, 0, -90);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(90, 0, -1);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+	
+	SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+	_goalQueue.pop();
+	SteerLib::AgentGoalInfo goal;
+	goal.targetLocation = Point(position().x, 0, 1);
+	_goalQueue.push(goal);
+	_goalQueue.push(originalgoal);
+
+	return runLongTermPlanning();
+	*/
+
+	// go to the back
+	/*
+	if (position().z > 2.1) {
+		if (position().x < 30) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(40, 0, 15);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(40, 0, 1.6);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 50) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(45, 0, 30);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(45, 0, 1.6);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 70) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(65, 0, 45);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(65, 0, 1.6);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x > 70) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(95, 0, 60);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(95, 0, 1.6);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+	}
+	else if (position().z < -2.1) {
+		if (position().x < 30) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(40, 0, -20);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(40, 0, -1.6);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 50) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(50, 0, -45);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(50, 0, -1.6);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 70) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(70, 0, -60);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(70, 0, -1.6);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+		else if (position().x < 91) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(80, 0, -80);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(80, 0, -1.6);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+	}
+	*/
 }
 
 // doorway-two-way
