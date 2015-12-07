@@ -38,6 +38,7 @@
     <fovy>45</fovy>
   </suggestedCameraView>
 
+  <!-- LEFT WALL -->
   <obstacle>
     <xmin>-11</xmin>
     <xmax>4.4</xmax>
@@ -47,6 +48,7 @@
     <zmax>50</zmax>
   </obstacle>
 
+  <!-- FRONT BARRIER -->
   <obstacle>
     <xmin>3.4</xmin>
     <xmax>4.4</xmax>
@@ -56,6 +58,7 @@
     <zmax>36.4</zmax>
   </obstacle>
 
+  <!-- RIGHT WALL -->
   <obstacle>
     <xmin>-11</xmin>
     <xmax>4.4</xmax>
@@ -65,6 +68,7 @@
     <zmax>-38.8</zmax>
   </obstacle>
 
+  <!-- BACK WALL -->
   <obstacle>
     <xmin>-12</xmin>
     <xmax>-11</xmax>

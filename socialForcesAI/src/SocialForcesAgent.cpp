@@ -862,14 +862,160 @@ void SocialForcesAgent::draw()
 // TODO
 bool SocialForcesAgent::firstAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// bunch of agents try to get out 
+	std::vector<Util::Point> agentPath;
 
-	return runLongTermPlanning();
+	// set goal point for every section
+
+	if (position().z > 0) {
+		if (position().x < -3) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(-2.1, 0, position().z);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(-2.1, 0, 37.7);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(10, 0, 37.7);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+
+		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(-2.5, 0, position().z-.5);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(-2.5, 0, 37.7);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(10, 0, 37.7);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+	else {
+		if (position().x < -3) {
+			SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+			_goalQueue.pop();
+			SteerLib::AgentGoalInfo goal;
+			goal.targetLocation = Point(-2.1, 0, position().z);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(-2.1, 0, -37.7);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(10, 0, -37.7);
+			_goalQueue.push(goal);
+			_goalQueue.push(originalgoal);
+
+			return runLongTermPlanning();
+		}
+
+		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(-2.5, 0, position().z-.5);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(-2.5, 0, -37.7);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(10, 0, -37.7);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+
+
+
+
+	/*
+	// right side
+	if (position().z < 0) {
+		
+		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(-3.5, 0, position().z);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(-3.5, 0, -37);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(10, 0, -37);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+	// left side
+	else {
+
+		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(-3.5, 0, position().z);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(-3.5, 0, 37);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(10, 0, 37);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+	*/
 }
 
 // plane_ingress
 // TODO
 bool SocialForcesAgent::secondAI() {
 	// bunch of agents try to get in
+	// IN PROGRESS
+	SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
+	_goalQueue.pop();
+
+	if (originalgoal.targetLocation.z > 33) {
+		SteerLib::AgentGoalInfo goal;
+		// entrance to left
+		goal.targetLocation = Point(8, 0, 38.5);
+		_goalQueue.push(goal);
+		// first barrier
+		goal.targetLocation = Point(-3, 0, 36);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+	else if (originalgoal.targetLocation.z > 29) {
+		SteerLib::AgentGoalInfo goal;
+		// entrance to left
+		goal.targetLocation = Point(8, 0, 38.5);
+		_goalQueue.push(goal);
+		// first barrier
+		goal.targetLocation = Point(-3, 0, 36);
+		_goalQueue.push(goal);
+		// second barrier
+		goal.targetLocation = Point(-3, 0, 32.6);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+
+		return runLongTermPlanning();
+	}
+	else
+	{
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(100, 0, 100);
+		_goalQueue.push(goal);
+		_goalQueue.push(originalgoal);
+		return runLongTermPlanning();
+	}
+
+
+	
+
+
+
+
+
+
 
 	return runLongTermPlanning();
 }
@@ -916,6 +1062,8 @@ bool SocialForcesAgent::fourthAI() {
 // Jake got this?
 bool SocialForcesAgent::fifthAI() {
 	// polygon at center and agents are trying going in multiple directions
+
+	// add goal points around polygon
 
 	return runLongTermPlanning();
 }
