@@ -99,20 +99,13 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
 
 	_enabled = true;
 
-	if (initialConditions.name == "A") {
-		printf("NAME: A\n");
-	}
-
     if (initialConditions.goals.size() == 0)
         throw Util::GenericException("No goals were specified!\n");
 
     while (!_goalQueue.empty())
         _goalQueue.pop();
 
-
 	std::string testcase = (*engineInfo->getModuleOptions("testCasePlayer").find("testcase")).second;
-
-	printf("NAME: %s\n", initialConditions.name);
 
 	// iterate over the sequence of goals specified by the initial conditions.
 	for (unsigned int i = 0; i<initialConditions.goals.size(); i++) {
@@ -157,10 +150,10 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
 		eighthAI(initialConditions);
 	}
 	else if (testcase == "wall-squeeze") {
-		ninthAI();
+		ninthAI(initialConditions);
 	}
 	else if (testcase == "hallway-two-way") {
-		tenthAI();
+		tenthAI(initialConditions);
 	}
 	else if (testcase == "maze") {
 		eleventhAI();
@@ -866,15 +859,15 @@ void SocialForcesAgent::draw()
 /**********************************************/
 
 // plane_egress
+//TODO
 bool SocialForcesAgent::firstAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// bunch of agents try to get out 
-	std::vector<Util::Point> agentPath;
-	runLongTermPlanning();
 
-	return true;
+	return runLongTermPlanning();
 }
 
 // plane_ingress
+//TODO
 bool SocialForcesAgent::secondAI() {
 	// bunch of agents try to get in
 	printf("plane_ingress\n");
@@ -883,9 +876,10 @@ bool SocialForcesAgent::secondAI() {
 }
 
 // crowd_crossing
+// TODO
 bool SocialForcesAgent::thirdAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// big agent trying to cross a one way street
-	printf("crowd_crossing\n");
+	/*printf("crowd_crossing\n");
 
 	if (initialConditions.name == "A") {
 		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
@@ -900,12 +894,15 @@ bool SocialForcesAgent::thirdAI(const SteerLib::AgentInitialConditions & initial
 		runLongTermPlanning();
 
 		return true;
-	}
+	}*/
+
 
 	return runLongTermPlanning();
+
 }
 
 // office-complex
+//TODO
 bool SocialForcesAgent::fourthAI() {
 	// bunch of agents try to get out of the office
 	printf("office-complex\n");
@@ -914,6 +911,7 @@ bool SocialForcesAgent::fourthAI() {
 }
 
 // hallway-four-way-rounded-roundabout
+// Jake got this?
 bool SocialForcesAgent::fifthAI() {
 	// polygon at center and agents are trying going in multiple directions
 	printf("hallway-four-way-rounded-roundabout\n");
@@ -922,14 +920,37 @@ bool SocialForcesAgent::fifthAI() {
 }
 
 // bottleneck-squeeze
+//TODO
 bool SocialForcesAgent::sixthAI() {
 	// bunch of agents trying to get through one entrance
 	printf("bottleneck-squeeze\n");
+
+	std::vector<Util::Point> agentPath;
+	SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+	_goalQueue.pop();
+
+	int x = position().x;
+
+	while (true) {
+		if (x < 60) {
+			break;
+		}
+
+		SteerLib::AgentGoalInfo goal;
+		goal.targetLocation = Point(x, 0, 0);
+		_goalQueue.push(goal);
+
+		x = x - 2;
+	}
+
+	_goalQueue.push(goalPoint);
 
 	return runLongTermPlanning();
 }
 
 // doorway-two-way
+// DONE
+// Try to optimize if time
 bool SocialForcesAgent::seventhAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// two agents try to get through same entrance 
 	printf("doorway-two-way\n");
@@ -964,10 +985,11 @@ bool SocialForcesAgent::seventhAI(const SteerLib::AgentInitialConditions & initi
 
 		return runLongTermPlanning();
 	}
-
 }
 
 // double-squeeze
+// DONE
+// Try to optimize if time
 bool SocialForcesAgent::eighthAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// four agents try to get by each other
 	//printf("double-squeeze\n");
@@ -1054,23 +1076,236 @@ bool SocialForcesAgent::eighthAI(const SteerLib::AgentInitialConditions & initia
 }
 
 // wall-squeeze
-bool SocialForcesAgent::ninthAI() {
+// Definitely need a better way to do this
+bool SocialForcesAgent::ninthAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// basically previous test case but there's now a wall and three agents
 	printf("wall-squeeze\n");
+
+	// bottom left agent
+	if (initialConditions.name == "A") {
+		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal1;
+		goal1.targetLocation = Point(-10, 0, .5);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(-6, 0, 1.55);
+		_goalQueue.push(goal1);
+		_goalQueue.push(goalPoint);
+
+		runLongTermPlanning();
+
+		return true;
+	}
+	// top agent
+	else if (initialConditions.name == "B") {
+		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal1;
+		goal1.targetLocation = Point(10, 0, -.75);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(1.5, 0, -.75);
+		_goalQueue.push(goal1);
+		
+		/*
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(17, 0, .55);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(20, 0, .55);
+		_goalQueue.push(goal1);
+		*/
+		goal1.targetLocation = Point(-3, 0, .55);
+		_goalQueue.push(goal1);
+		_goalQueue.push(goalPoint);
+
+		runLongTermPlanning();
+
+		return true;
+	}
+	// bottom right agent
+	else if (initialConditions.name == "C") {
+		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal1;
+		goal1.targetLocation = Point(-15, 0, .5);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(-10, 0, .5);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(-6, 0, 1.55);
+		_goalQueue.push(goal1);
+		_goalQueue.push(goalPoint);
+
+		runLongTermPlanning();
+
+		return true;
+	}
+
+
+	
 
 	return runLongTermPlanning();
 }
 
 // hallway-two-way
-bool SocialForcesAgent::tenthAI() {
+// DONE
+// optimize if time
+bool SocialForcesAgent::tenthAI(const SteerLib::AgentInitialConditions & initialConditions) {
+	// get direction of agents
+	// move them to one side
+	// proceed
 	// bunch of agents going two different directions
-	// sf + astar should work
-	printf("hallway-two-way\n");
+	//printf("hallway-two-way\n");
 
-	return runLongTermPlanning();
+	// separate into quadrants (x)
+	// TODO separate it further
+	// 100...75...50...25...0...-25...-50...-75...-100
+
+	// separate further into quadrants (y)
+	
+	// goes to right
+	if (initialConditions.direction.x == -1) {
+		if (position().x > 0) {
+
+			// closer to bottom wall
+			if (position().z < 0) {
+				SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+				_goalQueue.pop();
+				SteerLib::AgentGoalInfo goal1;
+				goal1.targetLocation = Point(45, 0, -6);
+				_goalQueue.push(goal1);
+				_goalQueue.push(goalPoint);
+
+				return runLongTermPlanning();
+			}
+			// closer to top wall
+			else {
+				SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+				_goalQueue.pop();
+				SteerLib::AgentGoalInfo goal1;
+				goal1.targetLocation = Point(45, 0, -3);
+				_goalQueue.push(goal1);
+				_goalQueue.push(goalPoint);
+
+				return runLongTermPlanning();
+			}
+		}
+		else {
+			return runLongTermPlanning();
+		}
+	}
+	// goes to the left
+	else {
+		if (position().x < 0) {
+
+			if (position().z < 0) {
+				SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+				_goalQueue.pop();
+				SteerLib::AgentGoalInfo goal1;
+				goal1.targetLocation = Point(45, 0, 6);
+				_goalQueue.push(goal1);
+				_goalQueue.push(goalPoint);
+
+				return runLongTermPlanning();
+			}
+			// closer to top wall
+			else {
+				SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+				_goalQueue.pop();
+				SteerLib::AgentGoalInfo goal1;
+				goal1.targetLocation = Point(45, 0, 3);
+				_goalQueue.push(goal1);
+				_goalQueue.push(goalPoint);
+
+				return runLongTermPlanning();
+			}
+		}
+		else {
+			// steerbench was lower with longterm
+			return runLongTermPlanning();
+		}
+	}
 }
 
 // maze
+//TODO
 bool SocialForcesAgent::eleventhAI() {
 	// should run astar here
 	printf("maze\n");

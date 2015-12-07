@@ -28,6 +28,7 @@
     <fovy>45</fovy>
   </suggestedCameraView>
 
+  <!-- quad 1 -->
   <obstacle>
     <xmin>-100</xmin>
     <xmax>-4.01</xmax>
@@ -37,6 +38,7 @@
     <zmax>100</zmax>
   </obstacle>
   
+  <!-- quad 4 -->
   <obstacle>
     <xmin>-100</xmin>
     <xmax>-4.01</xmax>
@@ -46,6 +48,7 @@
     <zmax>-4.01</zmax>
   </obstacle>
 
+  <!-- quad 3 -->
   <obstacle>
     <xmin>4.01</xmin>
     <xmax>100</xmax>
@@ -55,6 +58,7 @@
     <zmax>-4</zmax>
   </obstacle>
   
+  <!-- quad 2 -->
   <obstacle>
     <xmin>4.01</xmin>
     <xmax>100</xmax>

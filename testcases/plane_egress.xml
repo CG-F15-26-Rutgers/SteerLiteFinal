@@ -74,6 +74,18 @@
     <zmax>50</zmax>
   </obstacle>
 
+  
+
+  
+
+
+
+
+
+
+
+
+
   <obstacle>
     <xmin>-1.4</xmin>
     <xmax>3.4</xmax>
@@ -448,6 +460,7 @@
     <zmax>36.0</zmax>
   </obstacle>
   
+  <!-- top row 3 -->
    <agent>
     <name>00</name>
     <initialConditions>
@@ -464,9 +477,8 @@
       </seekStaticTarget>
      
     </goalSequence>
-
   </agent>
-
+  <!-- top row 2 -->
   <agent>
     <name>01</name>
     <initialConditions>
@@ -481,11 +493,9 @@
         <desiredSpeed>1.3</desiredSpeed>
         <timeDuration>1000.0</timeDuration>
       </seekStaticTarget>
-     
     </goalSequence>
-
   </agent>
-
+  <!-- top row 1 -->
   <agent>
     <name>02</name>
     <initialConditions>
@@ -500,12 +510,10 @@
         <desiredSpeed>1.3</desiredSpeed>
         <timeDuration>1000.0</timeDuration>
       </seekStaticTarget>
-     
     </goalSequence>
-
   </agent>
 
-
+  <!-- bottom row 1 -->
   <agent>
     <name>03</name>
     <initialConditions>
@@ -520,11 +528,9 @@
         <desiredSpeed>1.3</desiredSpeed>
         <timeDuration>1000.0</timeDuration>
       </seekStaticTarget>
-     
     </goalSequence>
-
   </agent>
-
+  <!-- bottom row 2 -->
   <agent>
     <name>04</name>
     <initialConditions>
