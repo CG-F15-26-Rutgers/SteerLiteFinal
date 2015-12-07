@@ -45,6 +45,7 @@
     <fovy>45</fovy>
   </suggestedCameraView>
 
+  <!-- right wall -->
   <obstacle>
     <xmin>-20</xmin>
     <xmax>20</xmax>
@@ -54,6 +55,7 @@
     <zmax>5</zmax>
   </obstacle>
 
+  <!-- left wall -->
   <obstacle>
     <xmin>-20</xmin>
     <xmax>20</xmax>
@@ -63,6 +65,7 @@
     <zmax>-1</zmax>
   </obstacle>
 
+  <!-- left door -->
   <obstacle>
     <xmin>-0.2</xmin>
     <xmax>0</xmax>
@@ -72,6 +75,7 @@
     <zmax>-0.3</zmax>
   </obstacle>
 
+  <!-- right door -->
   <obstacle>
     <xmin>-0.2</xmin>
     <xmax>0</xmax>

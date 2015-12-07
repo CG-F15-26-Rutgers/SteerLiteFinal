@@ -130,7 +130,7 @@ private:
 	bool fifthAI();
 	bool sixthAI();
 	bool seventhAI();
-	bool eighthAI();
+	bool eighthAI(const SteerLib::AgentInitialConditions & initialConditions);
 	bool ninthAI();
 	bool tenthAI();
 	bool eleventhAI();

@@ -31,6 +31,7 @@
     <fovy>45</fovy>
   </suggestedCameraView>
   
+    <!-- east wall -->
     <obstacle>
     <xmin>-100</xmin>
     <xmax>98</xmax>
@@ -40,6 +41,7 @@
     <zmax>-96</zmax>
   </obstacle>
 
+  <!-- west wall -->
   <obstacle>
     <xmin>-100</xmin>
     <xmax>98</xmax>
@@ -49,6 +51,7 @@
     <zmax>98</zmax>
   </obstacle>
 
+  <!-- south wall--> 
   <obstacle>
     <xmin>-100</xmin>
     <xmax>-96</xmax>
@@ -58,6 +61,7 @@
     <zmax>96</zmax>
   </obstacle>
 
+  <!-- north wall -->
   <obstacle>
     <xmin>92</xmin>
     <xmax>98</xmax>
@@ -67,6 +71,7 @@
     <zmax>98</zmax>
   </obstacle>
 
+  <!-- first horizontal wall -->
   <obstacle>
     <xmin>-54</xmin>
     <xmax>94</xmax>
@@ -76,6 +81,7 @@
     <zmax>76</zmax>
   </obstacle>
 
+  <!-- second horizontal wall -->
   <obstacle>
     <xmin>-98</xmin>
     <xmax>34</xmax>

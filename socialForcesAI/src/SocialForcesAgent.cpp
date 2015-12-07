@@ -68,36 +68,40 @@ void SocialForcesAgent::disable()
 
 void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialConditions, SteerLib::EngineInterface * engineInfo)
 {
-	 // compute the "old" bounding box of the agent before it is reset.  its OK that it will be invalid if the agent was previously disabled because the value is not used in that case.
-    _waypoints.clear();
-    _midTermPath.clear();
+	// compute the "old" bounding box of the agent before it is reset.  its OK that it will be invalid if the agent was previously disabled because the value is not used in that case.
+	_waypoints.clear();
+	_midTermPath.clear();
 
-    Util::AxisAlignedBox oldBounds(_position.x-_radius, _position.x+_radius, 0.0f, 0.5f, _position.z-_radius, _position.z+_radius);
+	Util::AxisAlignedBox oldBounds(_position.x - _radius, _position.x + _radius, 0.0f, 0.5f, _position.z - _radius, _position.z + _radius);
 
-    // initialize the agent based on the initial conditions
-    _position = initialConditions.position;
-    _forward = normalize(initialConditions.direction);
-    _radius = initialConditions.radius;
-    _velocity = initialConditions.speed * _forward;
+	// initialize the agent based on the initial conditions
+	_position = initialConditions.position;
+	_forward = normalize(initialConditions.direction);
+	_radius = initialConditions.radius;
+	_velocity = initialConditions.speed * _forward;
 
-    if (initialConditions.colorSet == true)
-        this->_color = initialConditions.color;
-    else
-        this->_color = Util::gBlue;
+	if (initialConditions.colorSet == true)
+		this->_color = initialConditions.color;
+	else
+		this->_color = Util::gBlue;
 
-    // compute the "new" bounding box of the agent
-    Util::AxisAlignedBox newBounds(_position.x-_radius, _position.x+_radius, 0.0f, 0.5f, _position.z-_radius, _position.z+_radius);
+	// compute the "new" bounding box of the agent
+	Util::AxisAlignedBox newBounds(_position.x - _radius, _position.x + _radius, 0.0f, 0.5f, _position.z - _radius, _position.z + _radius);
 
-    if (!_enabled) {
-        // if the agent was not enabled, then it does not already exist in the database, so add it.
-        gSpatialDatabase->addObject( dynamic_cast<SpatialDatabaseItemPtr>(this), newBounds);
-    }
-    else {
-        // if the agent was enabled, then the agent already existed in the database, so update it instead of adding it.
-        gSpatialDatabase->updateObject( dynamic_cast<SpatialDatabaseItemPtr>(this), oldBounds, newBounds);
-    }
+	if (!_enabled) {
+		// if the agent was not enabled, then it does not already exist in the database, so add it.
+		gSpatialDatabase->addObject(dynamic_cast<SpatialDatabaseItemPtr>(this), newBounds);
+	}
+	else {
+		// if the agent was enabled, then the agent already existed in the database, so update it instead of adding it.
+		gSpatialDatabase->updateObject(dynamic_cast<SpatialDatabaseItemPtr>(this), oldBounds, newBounds);
+	}
 
-    _enabled = true;
+	_enabled = true;
+
+	if (initialConditions.name == "A") {
+		printf("NAME: A\n");
+	}
 
     if (initialConditions.goals.size() == 0)
         throw Util::GenericException("No goals were specified!\n");
@@ -106,9 +110,8 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
         _goalQueue.pop();
 
 
-
-
 	std::string testcase = (*engineInfo->getModuleOptions("testCasePlayer").find("testcase")).second;
+
 
 	// iterate over the sequence of goals specified by the initial conditions.
 	for (unsigned int i = 0; i<initialConditions.goals.size(); i++) {
@@ -128,7 +131,42 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
 		}
 	}
 
-	LoadAI(testcase);
+	if (testcase == "plane_egress") {
+		firstAI();
+	}
+	else if (testcase == "plane_ingress") {
+		secondAI();
+	}
+	else if (testcase == "crowd_crossing") {
+		thirdAI();
+	}
+	else if (testcase == "office-complex") {
+		fourthAI();
+	}
+	else if (testcase == "hallway-four-way-rounded-roundabout") {
+		fifthAI();
+	}
+	else if (testcase == "bottleneck-squeeze") {
+		sixthAI();
+	}
+	else if (testcase == "doorway-two-way") {
+		seventhAI();
+	}
+	else if (testcase == "double-squeeze") {
+		eighthAI(initialConditions);
+	}
+	else if (testcase == "wall-squeeze") {
+		ninthAI();
+	}
+	else if (testcase == "hallway-two-way") {
+		tenthAI();
+	}
+	else if (testcase == "maze") {
+		eleventhAI();
+	}
+	else {
+		printf("WE WERE NOT READY FOR THIS\n");
+	}
 
 	/* if (testcase == "maze") {
 		printf("Run ASTAR\n");
@@ -172,8 +210,9 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
     else
         goalDirection = normalize( _goalQueue.front().targetLocation - position());
 
-    _prefVelocity = ((Util::Vector(goalDirection.x, 0.0f, goalDirection.z) * PREFERED_SPEED
-                      - velocity()) / _SocialForcesParams.sf_acceleration) * MASS;
+
+	_prefVelocity = ((Util::Vector(goalDirection.x, 0.0f, goalDirection.z) * PREFERED_SPEED
+			- velocity()) / _SocialForcesParams.sf_acceleration) * MASS;
 
     // _velocity = _prefVelocity;
 #ifdef _DEBUG_ENTROPY
@@ -254,7 +293,7 @@ Util::Vector SocialForcesAgent::calcProximityForce(float dt)
 
 Vector SocialForcesAgent::calcGoalForce(Vector _goalDirection, float _dt)
 {
-    return Util::Vector ((_goalDirection * PREFERED_SPEED) - velocity()) / _dt;
+	return Util::Vector((_goalDirection * PREFERED_SPEED) - velocity()) / _dt;
 }
 
 
@@ -813,50 +852,6 @@ void SocialForcesAgent::draw()
 }
 
 
-/*
-    Checks the testcase and loads the ai based on it
-*/
-bool SocialForcesAgent::LoadAI(std::string testcase)
-{
-    if (testcase == "plane_egress") {
-        return firstAI();
-    }
-    else if (testcase == "plane_ingress") {
-		return secondAI();
-    }
-    else if (testcase == "crowd_crossing") {
-		return thirdAI();
-    }
-    else if (testcase == "office-complex") {
-		return fourthAI();
-    }
-    else if (testcase == "hallway-four-way-rounded-roundabout") {
-		return fifthAI();
-    }
-    else if (testcase == "bottleneck-squeeze") {
-		return sixthAI();
-    }
-    else if (testcase == "doorway-two-way") {
-		return seventhAI();
-    }
-    else if (testcase == "double-squeeze") {
-		return eighthAI();
-    }
-    else if (testcase == "wall-squeeze") {
-		return ninthAI();
-    }
-    else if (testcase == "hallway-two-way") {
-		return tenthAI();
-    }
-    else if (testcase == "maze") {
-		return eleventhAI();
-    }
-    else {
-        printf("WE WERE NOT READY FOR THIS\n");
-	}
-}
-
-
 /**********************************************/
 /**********************************************/
 /**********************************************/
@@ -872,9 +867,10 @@ bool SocialForcesAgent::LoadAI(std::string testcase)
 // plane_egress
 bool SocialForcesAgent::firstAI() {
 	// bunch of agents try to get out 
-	printf("plane_egress\n");
+	std::vector<Util::Point> agentPath;
+	runLongTermPlanning();
 
-	return runLongTermPlanning();
+	return true;
 }
 
 // plane_ingress
@@ -882,7 +878,7 @@ bool SocialForcesAgent::secondAI() {
 	// bunch of agents try to get in
 	printf("plane_ingress\n");
 
-	return runLongTermPlanning;
+	return runLongTermPlanning();
 }
 
 // crowd_crossing
@@ -890,7 +886,7 @@ bool SocialForcesAgent::thirdAI() {
 	// big agent trying to cross a one way street
 	printf("crowd_crossing\n");
 
-	return runLongTermPlanning;
+	return runLongTermPlanning();
 }
 
 // office-complex
@@ -898,7 +894,7 @@ bool SocialForcesAgent::fourthAI() {
 	// bunch of agents try to get out of the office
 	printf("office-complex\n");
 	
-	return runLongTermPlanning;
+	return AStar();
 }
 
 // hallway-four-way-rounded-roundabout
@@ -906,7 +902,7 @@ bool SocialForcesAgent::fifthAI() {
 	// polygon at center and agents are trying going in multiple directions
 	printf("hallway-four-way-rounded-roundabout\n");
 
-	return runLongTermPlanning;
+	return runLongTermPlanning();
 }
 
 // bottleneck-squeeze
@@ -914,7 +910,7 @@ bool SocialForcesAgent::sixthAI() {
 	// bunch of agents trying to get through one entrance
 	printf("bottleneck-squeeze\n");
 
-	return runLongTermPlanning;
+	return runLongTermPlanning();
 }
 
 // doorway-two-way
@@ -922,15 +918,132 @@ bool SocialForcesAgent::seventhAI() {
 	// two agents try to get through same entrance 
 	printf("doorway-two-way\n");
 
-	return runLongTermPlanning;
+	if (position().x == 10) {
+		return AStar();
+	}
+	else {
+		std::vector<Util::Point> agentPath;
+
+		agentPath.push_back(Point(-9, 0, 2));
+		agentPath.push_back(Point(-8, 0, 2));
+		agentPath.push_back(Point(-7, 0, 2));
+		agentPath.push_back(Point(-6, 0, 2));
+		agentPath.push_back(Point(-5, 0, 2));
+		agentPath.push_back(Point(-4, 0, 2));
+		agentPath.push_back(Point(-3, 0, 2));
+		agentPath.push_back(Point(-2, 0, 2));
+		agentPath.push_back(Point(-1, 0, 2));
+		agentPath.push_back(Point(-0, 0, 2));
+
+		for (int i = 0; i < agentPath.size(); i++)
+		{
+			_midTermPath.push_back(agentPath.at(i));
+			if ((i % FURTHEST_LOCAL_TARGET_DISTANCE) == 0)
+			{
+				_waypoints.push_back(agentPath.at(i));
+			}
+		}
+		if (agentPath.size()>0)
+		{
+			for (int i = 1; i<agentPath.size(); ++i)
+			{
+				Util::DrawLib::drawLine(agentPath[i - 1], agentPath[i], gYellow);
+			}
+			//Util::DrawLib::drawCircle(__path[__path.size()-1], Util::Color(0.0f, 1.0f, 0.0f));
+		}
+
+
+
+		return  true;//runLongTermPlanning();
+	}
+
+	//return runLongTermPlanning();
 }
 
 // double-squeeze
-bool SocialForcesAgent::eighthAI() {
+bool SocialForcesAgent::eighthAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// four agents try to get by each other
-	printf("double-squeeze\n");
+	//printf("double-squeeze\n");
 
-	return runLongTermPlanning;
+	std::vector<Util::Point> agentPath;
+
+	// <-10, 0, -.5>
+	// <10, 0, -.5>
+	// <-10, 0, .5>
+	// <10, 0, .5>
+
+	// bottom left agent
+	if (initialConditions.name == "A") {
+		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal1;
+		goal1.targetLocation = Point(-12, 0, .6);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(1, 0, .6);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(12, 0, .6);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(15, 0, .6);
+		_goalQueue.push(goal1);
+		_goalQueue.push(goalPoint);
+
+		runLongTermPlanning();
+
+		return true;
+	}
+	// top left agent
+	else if (initialConditions.name == "B") {
+		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal1;
+		goal1.targetLocation = Point(-1, 0, -.6);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(-12, 0, -.6);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(-15, 0, -.6);
+		_goalQueue.push(goal1);
+		_goalQueue.push(goalPoint);
+
+		runLongTermPlanning();
+
+		return true;
+	}
+	// bottom right agent
+	else if (initialConditions.name == "C") {
+		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal1;
+		goal1.targetLocation = Point(1, 0, .6);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(12, 0, .6);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(15, 0, .6);
+		_goalQueue.push(goal1);
+		_goalQueue.push(goalPoint);
+
+		runLongTermPlanning();
+
+		return true;
+	}
+	// top right agent
+	else if (initialConditions.name == "D") {
+		SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
+		_goalQueue.pop();
+		SteerLib::AgentGoalInfo goal1;
+		goal1.targetLocation = Point(12, 0, -.6);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(-1, 0, -.6);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(-12, 0, -.6);
+		_goalQueue.push(goal1);
+		goal1.targetLocation = Point(-15, 0, -.6);
+		_goalQueue.push(goal1);
+		_goalQueue.push(goalPoint);
+
+		runLongTermPlanning();
+
+		return true;
+	}
 }
 
 // wall-squeeze
@@ -938,7 +1051,7 @@ bool SocialForcesAgent::ninthAI() {
 	// basically previous test case but there's now a wall and three agents
 	printf("wall-squeeze\n");
 
-	return runLongTermPlanning;
+	return runLongTermPlanning();
 }
 
 // hallway-two-way
@@ -947,7 +1060,7 @@ bool SocialForcesAgent::tenthAI() {
 	// sf + astar should work
 	printf("hallway-two-way\n");
 
-	return runLongTermPlanning;
+	return runLongTermPlanning();
 }
 
 // maze
@@ -955,7 +1068,41 @@ bool SocialForcesAgent::eleventhAI() {
 	// should run astar here
 	printf("maze\n");
 
-	return AStar();
+	std::vector<Util::Point> agentPath;
+	
+	
+	agentPath.push_back(Point(-60, 0, position().z));
+	agentPath.push_back(Point(-70, 0, 60));
+	agentPath.push_back(Point(55, 0, 60));
+	agentPath.push_back(Point(55, 0, 20));
+	agentPath.push_back(Point(-40, 0, 20));
+	agentPath.push_back(Point(-40, 0, -10));
+	agentPath.push_back(Point(10, 0, -10));
+	agentPath.push_back(Point(10, 0, -65));
+	agentPath.push_back(Point(-35, 0, -65));
+	
+	
+	for (int i = 0; i < agentPath.size(); i++)
+	{
+		_midTermPath.push_back(agentPath.at(i));
+		if ((i % FURTHEST_LOCAL_TARGET_DISTANCE) == 0)
+		{
+			_waypoints.push_back(agentPath.at(i));
+		}
+	}
+	if (agentPath.size()>0)
+	{
+		for (int i = 1; i<agentPath.size(); ++i)
+		{
+			Util::DrawLib::drawLine(agentPath[i - 1], agentPath[i], gYellow);
+		}
+		//Util::DrawLib::drawCircle(__path[__path.size()-1], Util::Color(0.0f, 1.0f, 0.0f));
+	}
+
+	return true;
+
+
+	//return AStar();
 }
 
 bool SocialForcesAgent::AStar()

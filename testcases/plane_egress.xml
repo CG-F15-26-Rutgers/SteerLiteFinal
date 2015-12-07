@@ -459,7 +459,7 @@
     <zmin>35.0</zmin>
     <zmax>36.0</zmax>
   </obstacle>
-
+  
    <agent>
     <name>00</name>
     <initialConditions>
