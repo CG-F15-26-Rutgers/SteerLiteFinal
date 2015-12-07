@@ -876,6 +876,7 @@ bool SocialForcesAgent::secondAI() {
 }
 
 // crowd_crossing
+// stuff here
 // TODO
 bool SocialForcesAgent::thirdAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// big agent trying to cross a one way street
