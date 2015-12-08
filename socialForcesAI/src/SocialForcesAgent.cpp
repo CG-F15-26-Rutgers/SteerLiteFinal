@@ -853,17 +853,17 @@ void SocialForcesAgent::draw()
 /*
         TESTCASE AI's
 
-		egress			-->		needs work
-		ingress			-->		to finish
-		crowd			-->		needs work
-		office			-->		TODO
-		roundabout		-->		needs work
-		bottleneck		-->		to finish
-		doorway			-->		DONE
-		double squeeze	-->		DONE
-		wall squeeze	-->		needs work
-		hallway			-->		DONE/could be better
-		maze			-->		needs work
+		egress			-->		needs work				--> TERRIBLE
+		ingress			-->		to finish				--> TERRIBLE 
+		crowd			-->		DONE/could be better	--> BAD
+		office			-->		TODO					--> TERRIBLE
+		roundabout		-->		DONE/could be better	-->	made changes, get new score
+		bottleneck		-->		to finish				--> no score
+		doorway			-->		DONE					-->	good
+		double squeeze	-->		DONE					-->	good
+		wall squeeze	-->		DONE/could be better	-->	made changes, get new score
+		hallway			-->		DONE/could be better	-->	could be better
+		maze			-->		needs work				--> TERRIBLE
 */
 /**********************************************/
 /**********************************************/
@@ -1077,8 +1077,6 @@ bool SocialForcesAgent::fourthAI() {
 // works but needs more work
 bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// polygon at center and agents are trying going in multiple directions
-
-	// agents need to get off before agent get onto roundabout
 
 	// going left
 	if (_goalQueue.front().targetLocation.x > 97 && _goalQueue.front().targetLocation.z > 4)
@@ -1567,7 +1565,6 @@ bool SocialForcesAgent::seventhAI(const SteerLib::AgentInitialConditions & initi
 
 // double-squeeze
 // DONE
-// Try to optimize if time
 bool SocialForcesAgent::eighthAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// four agents try to get by each other
 	//printf("double-squeeze\n");
@@ -1655,8 +1652,6 @@ bool SocialForcesAgent::eighthAI(const SteerLib::AgentInitialConditions & initia
 
 // wall-squeeze
 // Definitely need a better way to do this
-// Works if remove comments
-// It's just really bad
 bool SocialForcesAgent::ninthAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// basically previous test case but there's now a wall and three agents
 
