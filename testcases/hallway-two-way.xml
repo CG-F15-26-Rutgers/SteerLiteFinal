@@ -77,7 +77,7 @@
 
   </agentRegion>
 
-  <!-- goes right -->
+  <!-- goes to the right -->
   <agentRegion>
     <numAgents>100</numAgents>
     <regionBounds>

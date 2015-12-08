@@ -34,7 +34,7 @@ Camera::Camera()
 	curve.setType(Util::catmullCurve);
 
 	// Default to no animation (simulation engine can override this)
-	animateCamera = false;
+	animateCamera = true;
 
 	reset();
 }

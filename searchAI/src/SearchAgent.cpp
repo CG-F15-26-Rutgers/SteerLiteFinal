@@ -12,7 +12,7 @@
 /// @brief Implements the SearchAgent class.
 
 #define MAX_FORCE_MAGNITUDE 3.0f
-#define MAX_SPEED 0.13f
+#define MAX_SPEED 3f
 #define AGENT_MASS 1.0f
 #define GOAL_REGION 0.1f
 #define DURATION 15

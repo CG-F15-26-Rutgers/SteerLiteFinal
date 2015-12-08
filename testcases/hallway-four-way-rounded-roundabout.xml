@@ -21,14 +21,23 @@
     </worldBounds>
   </header>
   
+
+  <suggestedCameraView>
+    <position> <x>0</x> <y>50</y> <z>-30</z> </position>
+    <lookat> <x>0</x> <y>0</y> <z>0</z> </lookat>
+    <up> <x>0</x> <y>1</y> <z>0</z> </up>
+    <targetTime>.1</targetTime>
+  </suggestedCameraView>
+
+
   <suggestedCameraView>
     <position> <x>0</x> <y>100</y> <z>-30</z> </position>
     <lookat> <x>0</x> <y>0</y> <z>0</z> </lookat>
     <up> <x>0</x> <y>1</y> <z>0</z> </up>
-    <fovy>45</fovy>
+    <targetTime>.1</targetTime>
   </suggestedCameraView>
 
-
+  <!-- TOP RIGHT BOX -->
   <polygonObstacle isClosed="true">
     <vertex> <x>-8.0</x> <y>0.0</y> <z>100.0</z> </vertex>
     <vertex> <x>-100.0</x> <y>0.0</y> <z>100.0</z> </vertex>
@@ -37,6 +46,7 @@
     <vertex> <x>-8.0</x> <y>0.0</y> <z>12.0</z> </vertex>
   </polygonObstacle>
 
+  <!-- BOTTOM LEFT BOX -->
   <polygonObstacle isClosed="true">
     <vertex> <x>8.0</x> <y>0.0</y> <z>-100.0</z> </vertex>
     <vertex> <x>100.0</x> <y>0.0</y> <z>-100.0</z> </vertex>
@@ -45,6 +55,7 @@
     <vertex> <x>8.0</x> <y>0.0</y> <z>-12.0</z> </vertex>
   </polygonObstacle>
 
+  <!-- BOTTOM RIGHT BOX -->
   <polygonObstacle isClosed="true">
     <vertex> <x>-8.0</x> <y>0.0</y> <z>-100.0</z> </vertex>
     <vertex> <x>-100.0</x> <y>0.0</y> <z>-100.0</z> </vertex>
@@ -53,6 +64,8 @@
     <vertex> <x>-8.0</x> <y>0.0</y> <z>-12.0</z> </vertex>
   </polygonObstacle>
 
+
+  <!-- TOP LEFT BOX -->
   <polygonObstacle isClosed="true">
     <vertex> <x>8.0</x> <y>0.0</y> <z>100.0</z> </vertex>
     <vertex> <x>100.0</x> <y>0.0</y> <z>100.0</z> </vertex>
@@ -61,7 +74,7 @@
     <vertex> <x>8.0</x> <y>0.0</y> <z>12.0</z> </vertex>
   </polygonObstacle>
 
-
+  <!-- OBSTACLE -->
   <polygonObstacle isClosed="true">
     <vertex> <x>-2.0</x> <y>0.0</y> <z>4.0</z> </vertex>
     <vertex> <x>2.0</x> <y>0.0</y> <z>4.0</z> </vertex>
@@ -71,6 +84,7 @@
     <vertex> <x>-4.0</x> <y>0.0</y> <z>0.0</z> </vertex>
   </polygonObstacle>
 
+  <!-- going to left -->
   <agentRegion>
     <numAgents>100</numAgents>
     <regionBounds>
@@ -96,6 +110,7 @@
 
   </agentRegion>
 
+  <!-- going right -->
   <agentRegion>
     <numAgents>100</numAgents>
     <regionBounds>
@@ -121,6 +136,7 @@
 
   </agentRegion>
   
+    <!-- going down -->
     <agentRegion>
     <numAgents>100</numAgents>
     <regionBounds>
@@ -146,6 +162,7 @@
 
   </agentRegion>
 
+  <!-- going up -->
     <agentRegion>
     <numAgents>100</numAgents>
     <regionBounds>

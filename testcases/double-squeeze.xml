@@ -24,17 +24,36 @@
     </worldBounds>
   </header>
 
+
   <suggestedCameraView>
-    <position> <x>-10</x> <y>35</y> <z>-5</z> </position>
+    <up> <x>30</x> <y>0</y> <z>30</z> </up>
+    <fovy>45</fovy>
+    <targetTime>1</targetTime>
+  </suggestedCameraView>
+
+<!--
+  <suggestedCameraView>
+    <position> <x>-10</x> <y>0</y> <z>0</z> </position>
     <lookat> <x>0</x> <y>0</y> <z>0</z> </lookat>
     <up> <x>0</x> <y>1</y> <z>0</z> </up>
+    <targetTime>.5</targetTime>
     <fovy>45</fovy>
   </suggestedCameraView>
 
   <suggestedCameraView>
-    <position> <x>-10</x> <y>35</y> <z>-0</z> </position>
+    <position> <x>100</x> <y>0</y> <z>0</z> </position>
     <lookat> <x>0</x> <y>0</y> <z>0</z> </lookat>
     <up> <x>0</x> <y>1</y> <z>0</z> </up>
+    <targetTime>.5</targetTime>
+    <fovy>45</fovy>
+  </suggestedCameraView>
+
+
+  <suggestedCameraView>
+    <position> <x>-10</x> <y>0</y> <z>-0</z> </position>
+    <lookat> <x>0</x> <y>0</y> <z>0</z> </lookat>
+    <up> <x>0</x> <y>1</y> <z>0</z> </up>
+    <targetTime>.1</targetTime>
     <fovy>45</fovy>
   </suggestedCameraView>
 
@@ -44,7 +63,7 @@
     <up> <x>0</x> <y>1</y> <z>0</z> </up>
     <fovy>45</fovy>
   </suggestedCameraView>
-
+-->
   <!-- right wall -->
   <obstacle>
     <xmin>-20</xmin>

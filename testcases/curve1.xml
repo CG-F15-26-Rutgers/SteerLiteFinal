@@ -22,12 +22,12 @@
   </header>
   
   <suggestedCameraView>
-    <position> <x>20</x> <y>10</y> <z>0</z> </position>
+    <position> <x>0</x> <y>0</y> <z>0</z> </position>
     <lookat> <x>0</x> <y>0</y> <z>-5</z> </lookat>
     <up> <x>0</x> <y>1</y> <z>0</z> </up>
     <fovy>45</fovy>
     <targetTangent> <x>0</x> <y>0</y> <z>0</z> </targetTangent>
-    <targetTime>30</targetTime>
+    <targetTime>400</targetTime>
   </suggestedCameraView>
 
   <suggestedCameraView>
@@ -84,3 +84,4 @@
   </agent>
 
 </SteerBenchTestCase>
+

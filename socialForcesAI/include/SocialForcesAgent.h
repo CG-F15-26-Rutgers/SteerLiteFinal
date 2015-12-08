@@ -127,7 +127,7 @@ private:
 	bool secondAI();
 	bool thirdAI(const SteerLib::AgentInitialConditions & initialConditions);
 	bool fourthAI();
-	bool fifthAI();
+	bool fifthAI(const SteerLib::AgentInitialConditions & initialConditions);
 	bool sixthAI();
 	bool seventhAI(const SteerLib::AgentInitialConditions & initialConditions);
 	bool eighthAI(const SteerLib::AgentInitialConditions & initialConditions);
