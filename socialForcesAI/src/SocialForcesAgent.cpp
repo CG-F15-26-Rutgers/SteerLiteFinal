@@ -1078,8 +1078,6 @@ bool SocialForcesAgent::fourthAI() {
 bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// polygon at center and agents are trying going in multiple directions
 
-	// add goal points around polygon
-
 	// agents need to get off before agent get onto roundabout
 
 	// going left
@@ -1687,7 +1685,7 @@ bool SocialForcesAgent::ninthAI(const SteerLib::AgentInitialConditions & initial
 		goal.targetLocation = Point(1.5, 0, -.75);
 		_goalQueue.push(goal);
 		
-		/*
+		
 		goal.targetLocation = Point(17, 0, .55);
 		_goalQueue.push(goal);
 		goal.targetLocation = Point(20, 0, .55);
@@ -1711,7 +1709,7 @@ bool SocialForcesAgent::ninthAI(const SteerLib::AgentInitialConditions & initial
 		_goalQueue.push(goal);
 		goal.targetLocation = Point(20, 0, .55);
 		_goalQueue.push(goal);
-		*/
+		
 		goal.targetLocation = Point(-3, 0, .55);
 		_goalQueue.push(goal);
 		_goalQueue.push(originalgoal);
