@@ -18,6 +18,8 @@
 
 #define AGENT_MASS 1.0f
 
+#define roundabout true
+
 using namespace Util;
 using namespace SocialForcesGlobals;
 using namespace SteerLib;
@@ -251,7 +253,12 @@ std::pair<float, Util::Point> minimum_distance(Util::Point l1, Util::Point l2, U
 
 Util::Vector SocialForcesAgent::calcProximityForce(float dt)
 {
-    Util::Vector agent_repulsion_force = Util::Vector(0, 0, 0);
+	Util::Vector agent_repulsion_force;
+	if(roundabout)
+		agent_repulsion_force = Util::Vector(1, 0, 1);
+	else 
+		agent_repulsion_force = Util::Vector(0, 0, 0);
+
     std::set<SteerLib::SpatialDatabaseItemPtr> _neighbors;
     gSpatialDatabase->getItemsInRange(_neighbors,
                                       _position.x - (this->_radius + _SocialForcesParams.sf_query_radius),
@@ -1081,8 +1088,8 @@ bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initial
 	// going left
 	if (_goalQueue.front().targetLocation.x > 97 && _goalQueue.front().targetLocation.z > 4)
 	{
-		// check if agent is close to goal
-		if (position().x > 4) {
+		// check if agent is passed the starting point
+		if (position().x > -12) {
 			return runLongTermPlanning();
 		}
 
@@ -1103,7 +1110,7 @@ bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initial
 	else if (_goalQueue.front().targetLocation.x == 0 && _goalQueue.front().targetLocation.z == -98)
 	{
 		// check if agent is close to goal
-		if (position().z < -4) {
+		if (position().z < 4) {
 			return runLongTermPlanning();
 		}
 
@@ -1124,7 +1131,7 @@ bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initial
 	else if (_goalQueue.front().targetLocation.x == -98 && _goalQueue.front().targetLocation.z == -4)
 	{
 		// check if agent is close to the goal
-		if (position().x < -4) 
+		if (position().x < 12) 
 		{
 			return runLongTermPlanning();
 		}
@@ -1146,7 +1153,7 @@ bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initial
 	else {
 		
 		// check if agent is already close to the goal
-		if (position().z > 4)
+		if (position().z > -4)
 		{
 			return runLongTermPlanning();
 		}
