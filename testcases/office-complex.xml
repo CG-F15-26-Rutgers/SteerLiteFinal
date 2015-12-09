@@ -31,6 +31,7 @@
     <fovy>45</fovy>
   </suggestedCameraView>
 
+  <!-- TOP RIGHT WALL -->
   <obstacle>
     <xmin>-70</xmin>
     <xmax>-40</xmax>
@@ -40,6 +41,7 @@
     <zmax>54</zmax>
   </obstacle>
 
+  <!--  -->
 	<obstacle>
     <xmin>-40</xmin>
     <xmax>-7.5</xmax>
@@ -94,6 +96,7 @@
     <zmax>-49.5</zmax>
   </obstacle>
   
+  <!-- LEFT LONG WALL -->
   <obstacle>
     <xmin>40</xmin>
     <xmax>70</xmax>
@@ -1653,6 +1656,7 @@
     <zmax>25</zmax>
   </obstacle>
   
+  <!-- lower middle going down -->
   <agentRegion>
     <numAgents>400</numAgents>
     <regionBounds>
