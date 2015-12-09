@@ -863,15 +863,15 @@ void SocialForcesAgent::draw()
 		egress			-->		needs work				--> TERRIBLE
 		ingress			-->		NEED TO FINISH			--> N/A 
 		crowd			-->		DONE/could be better	--> BAD
-		office			-->		LOST CAUSE				--> TERRIBLE
+		*office			-->		LOST CAUSE				--> TERRIBLE
 		roundabout		-->		DONE					-->	good
-			NOTES: make sure speed is slow and ROUNDABOUT = true
+			NOTE: make sure speed is slow and ROUNDABOUT = true
 		bottleneck		-->		to finish				--> no score
 		doorway			-->		DONE					-->	good
 		double squeeze	-->		DONE					-->	good
 		wall squeeze	-->		DONE					-->	good 
 		hallway			-->		DONE/could be better	-->	could be better
-		maze			-->		LOST CAUSE				--> TERRIBLE
+		*maze			-->		LOST CAUSE				--> TERRIBLE
 */
 /**********************************************/
 /**********************************************/
@@ -879,8 +879,6 @@ void SocialForcesAgent::draw()
 /**********************************************/
 
 // plane_egress
-// TODO
-// Works but really bad 
 bool SocialForcesAgent::firstAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// bunch of agents try to get out 
 	std::vector<Util::Point> agentPath;
@@ -986,7 +984,6 @@ bool SocialForcesAgent::firstAI(const SteerLib::AgentInitialConditions & initial
 }
 
 // plane_ingress
-// TODO
 bool SocialForcesAgent::secondAI() {
 	// bunch of agents try to get in
 	// IN PROGRESS
@@ -1359,9 +1356,13 @@ bool SocialForcesAgent::secondAI() {
 }
 
 // crowd_crossing
-// DONE
 bool SocialForcesAgent::thirdAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// big agent trying to cross a one way street
+
+	// idea
+	// have the other agents go around the big agent
+	// see how long it takes for the big guy to cross 
+	// then change the goals for the remaining agents or just run planner
 
 	SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
 	_goalQueue.pop();
@@ -1379,7 +1380,8 @@ bool SocialForcesAgent::thirdAI(const SteerLib::AgentInitialConditions & initial
 		return true;
 	}
 
-	else{
+	else
+	{		
 		goal.targetLocation = originalgoal.targetLocation;
 		goal.targetLocation.z -= 5;
 		_goalQueue.push(goal);
