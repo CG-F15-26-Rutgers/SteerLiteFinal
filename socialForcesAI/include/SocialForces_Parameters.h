@@ -85,9 +85,7 @@ namespace SocialForcesGlobals {
 	extern float sf_wall_b;
 	extern float sf_wall_a;
 	extern float sf_max_speed;
-
-
-
+	
 	extern PhaseProfilers * gPhaseProfilers;
 }
 
@@ -108,6 +106,9 @@ public:
 	float sf_wall_b;
 	float sf_wall_a;
 	float sf_max_speed;
+
+	//testcase params
+	bool sf_roundabout;
 
 	void setParameters(SteerLib::Behaviour behavior)
 	{

@@ -18,7 +18,7 @@
 
 #define AGENT_MASS 1.0f
 
-#define roundabout true
+#define ROUNDABOUT true
 
 using namespace Util;
 using namespace SocialForcesGlobals;
@@ -254,7 +254,7 @@ std::pair<float, Util::Point> minimum_distance(Util::Point l1, Util::Point l2, U
 Util::Vector SocialForcesAgent::calcProximityForce(float dt)
 {
 	Util::Vector agent_repulsion_force;
-	if(roundabout)
+	if(ROUNDABOUT)
 		agent_repulsion_force = Util::Vector(1, 0, 1);
 	else 
 		agent_repulsion_force = Util::Vector(0, 0, 0);
@@ -864,7 +864,8 @@ void SocialForcesAgent::draw()
 		ingress			-->		to finish				--> TERRIBLE 
 		crowd			-->		DONE/could be better	--> BAD
 		office			-->		TODO					--> TERRIBLE
-		roundabout		-->		DONE/could be better	-->	made changes, get new score
+		roundabout		-->		DONE/could be better	-->	DONE
+			NOTES: make sure speed is slow and ROUNDABOUT = true
 		bottleneck		-->		to finish				--> no score
 		doorway			-->		DONE					-->	good
 		double squeeze	-->		DONE					-->	good
@@ -1084,12 +1085,10 @@ bool SocialForcesAgent::fourthAI() {
 }
 
 // hallway-four-way-rounded-roundabout
-// works but needs more work
 // make sure roundabout = false if not testing this
+// DONE DON'T DO ANYTHING
 bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// polygon at center and agents are trying going in multiple directions
-
-	std::vector<Util::Point> agentpath;
 
 	// going left
 	if (_goalQueue.front().targetLocation.x > 97 && _goalQueue.front().targetLocation.z > 4)
@@ -1679,9 +1678,11 @@ bool SocialForcesAgent::ninthAI(const SteerLib::AgentInitialConditions & initial
 		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
 		_goalQueue.pop();
 		SteerLib::AgentGoalInfo goal;
-		goal.targetLocation = Point(-10, 0, .5);
+		goal.targetLocation = Point(-15, 0, -.5);
 		_goalQueue.push(goal);
-		goal.targetLocation = Point(-6, 0, 1.55);
+		goal.targetLocation = Point(-12, 0, -.5);
+		_goalQueue.push(goal);
+		goal.targetLocation = Point(0, 0, .55);
 		_goalQueue.push(goal);
 		_goalQueue.push(originalgoal);
 
@@ -1727,21 +1728,16 @@ bool SocialForcesAgent::ninthAI(const SteerLib::AgentInitialConditions & initial
 		goal.targetLocation = Point(-3, 0, .55);
 		_goalQueue.push(goal);
 		_goalQueue.push(originalgoal);
+		
 
-		runLongTermPlanning();
-
-		return true;
+		return runLongTermPlanning();
 	}
 	// bottom right agent
 	else if (initialConditions.name == "C") {
 		SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
 		_goalQueue.pop();
 		SteerLib::AgentGoalInfo goal;
-		goal.targetLocation = Point(-15, 0, .5);
-		_goalQueue.push(goal);
-		goal.targetLocation = Point(-10, 0, .5);
-		_goalQueue.push(goal);
-		goal.targetLocation = Point(-6, 0, 1.55);
+		goal.targetLocation = Point(0, 0, .55);
 		_goalQueue.push(goal);
 		_goalQueue.push(originalgoal);
 
