@@ -989,6 +989,9 @@ bool SocialForcesAgent::firstAI(const SteerLib::AgentInitialConditions & initial
 bool SocialForcesAgent::secondAI() {
 	// bunch of agents try to get in
 	// IN PROGRESS
+
+
+	/*
 	SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
 	_goalQueue.pop();
 
@@ -1027,7 +1030,7 @@ bool SocialForcesAgent::secondAI() {
 		_goalQueue.push(originalgoal);
 		return runLongTermPlanning();
 	}
-
+	*/
 
 	
 
@@ -1082,8 +1085,11 @@ bool SocialForcesAgent::fourthAI() {
 
 // hallway-four-way-rounded-roundabout
 // works but needs more work
+// make sure roundabout = false if not testing this
 bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initialConditions) {
 	// polygon at center and agents are trying going in multiple directions
+
+	std::vector<Util::Point> agentpath;
 
 	// going left
 	if (_goalQueue.front().targetLocation.x > 97 && _goalQueue.front().targetLocation.z > 4)
@@ -1102,6 +1108,8 @@ bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initial
 		_goalQueue.push(newgoal);
 		newgoal.targetLocation = Point(12, 0, 4);		// west point
 		_goalQueue.push(newgoal);	
+		newgoal.targetLocation = Point(50, 0, 5);		// west point
+		_goalQueue.push(newgoal);
 		_goalQueue.push(goal);							// go to goal
 
 		return runLongTermPlanning();
@@ -1122,6 +1130,8 @@ bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initial
 		newgoal.targetLocation = Point(12, 0, 0);		// west point
 		_goalQueue.push(newgoal);
 		newgoal.targetLocation = Point(4, 0, -12);		// south point
+		_goalQueue.push(newgoal);
+		newgoal.targetLocation = Point(0, 0, -50);		// south point
 		_goalQueue.push(newgoal);
 		_goalQueue.push(goal);							// go to goal
 
@@ -1145,6 +1155,8 @@ bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initial
 		_goalQueue.push(newgoal);
 		newgoal.targetLocation = Point(-12, 0, -4);		// east point
 		_goalQueue.push(newgoal);
+		newgoal.targetLocation = Point(-50, 0, -5);		// west point
+		_goalQueue.push(newgoal);
 		_goalQueue.push(goal);							// go to goal
 
 		return runLongTermPlanning();
@@ -1166,6 +1178,8 @@ bool SocialForcesAgent::fifthAI(const SteerLib::AgentInitialConditions & initial
 		newgoal.targetLocation = Point(-12, 0, 0);		// east point
 		_goalQueue.push(newgoal);
 		newgoal.targetLocation = Point(-4, 0, 12);		// north point
+		_goalQueue.push(newgoal);
+		newgoal.targetLocation = Point(0, 0, 50);		// south point
 		_goalQueue.push(newgoal);
 		_goalQueue.push(goal);							// go to goal
 
@@ -1598,9 +1612,7 @@ bool SocialForcesAgent::eighthAI(const SteerLib::AgentInitialConditions & initia
 		_goalQueue.push(goal);
 		_goalQueue.push(originalgoal);
 
-		runLongTermPlanning();
-
-		return true;
+		return runLongTermPlanning();
 	}
 	// top left agent
 	else if (initialConditions.name == "B") {
