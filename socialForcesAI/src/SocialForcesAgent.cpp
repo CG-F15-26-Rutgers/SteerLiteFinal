@@ -21,6 +21,9 @@
 // SET THIS FOR ROUNDABOUT
 #define ROUNDABOUT false
 
+// SET THIS FOR BOTTLENECK
+#define BOTTLENECK true
+
 // debgging flag
 #define TESTCASE_DEBUG true
 
@@ -164,6 +167,9 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
 	else if (testcase == "maze") {
 		eleventhAI();
 	}
+	else if (testcase == "search-1" || "search-2") {
+		AStar();
+	}
 	else {
 		printf("WE WERE NOT READY FOR THIS\n");
 	}
@@ -260,7 +266,7 @@ Util::Vector SocialForcesAgent::calcProximityForce(float dt)
 	Util::Vector agent_repulsion_force;
 	if(ROUNDABOUT)
 		agent_repulsion_force = Util::Vector(1, 0, 1);
-	else 
+	else
 		agent_repulsion_force = Util::Vector(0, 0, 0);
 
     std::set<SteerLib::SpatialDatabaseItemPtr> _neighbors;
@@ -340,7 +346,7 @@ Util::Vector SocialForcesAgent::calcAgentRepulsionForce(float dt)
 
     }
 
-    return agent_repulsion_force;
+		return agent_repulsion_force;
 }
 
 
@@ -871,18 +877,20 @@ void SocialForcesAgent::draw()
 /*
         TESTCASE AI's
 
+		testcase				status						score notes
+		=======================================================================
 		egress			-->		DONE					--> could be better 
 		ingress			-->		DONE					--> could be better
 		crowd			-->		DONE					--> could be better
-		*office			-->		LOST CAUSE				--> TERRIBLE
+		*office			-->		TODO					--> TERRIBLE
 		roundabout		-->		DONE					-->	good
 			NOTE: make sure speed is slow and ROUNDABOUT = true
-		bottleneck		-->		to finish				--> no score
+		bottleneck		-->		TODO					--> no score
 		doorway			-->		DONE					-->	good
 		double squeeze	-->		DONE					-->	good
 		wall squeeze	-->		DONE					-->	good 
 		hallway			-->		DONE					-->	could be better
-		*maze			-->		DONE					--> could be better
+		maze			-->		DONE					--> could be better
 */
 /**********************************************/
 /**********************************************/
@@ -1430,14 +1438,90 @@ bool SocialForcesAgent::sixthAI() {
 	// bunch of agents trying to get through one entrance
 
 	// sort by quadrant
-
-
-	return runLongTermPlanning();
-
 	SteerLib::AgentGoalInfo originalgoal = _goalQueue.front();
 	_goalQueue.pop();
 	SteerLib::AgentGoalInfo goal;
 
+
+	// z --> L/R
+	// x --> U/D
+	
+
+	goal.targetLocation = Point(20, 0, 0);
+	_goalQueue.push(goal);
+	goal.targetLocation = Point(-15, 0, 0);
+	_goalQueue.push(goal);
+	_goalQueue.push(originalgoal);
+
+	return runLongTermPlanning();
+
+	if (position().x < 50) {
+		goal.targetLocation = Point(50, 0, position().z);
+		_goalQueue.push(goal);
+		if (position().z > 0) {
+			goal.targetLocation = Point(50, 0, 90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, 90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, 0);
+			_goalQueue.push(goal);
+		}
+		else {
+			goal.targetLocation = Point(50, 0, -75);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(65, 0, -75);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(65, 0, 90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, 90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, 0);
+			_goalQueue.push(goal);
+		}
+	}
+	else {
+		goal.targetLocation = Point(90, 0, position().z);
+		_goalQueue.push(goal);
+
+		if (position().z > 0) {
+			goal.targetLocation = Point(90, 0, 90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(70, 0, 90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(70, 0, 50);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(50, 0, 50);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(50, 0, 90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, 90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, 0);
+			_goalQueue.push(goal);
+		}
+		else {	
+			goal.targetLocation = Point(90, 0, -90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(70, 0, -90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(70, 0, 50);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(50, 0, 50);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(50, 0, 90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, 90);
+			_goalQueue.push(goal);
+			goal.targetLocation = Point(30, 0, 0);
+			_goalQueue.push(goal);
+		}
+
+		
+	}
+
+	_goalQueue.push(originalgoal);
+
+	return runLongTermPlanning();
 
 	if (position().z < 0 && position().x < 50) {
 		goal.targetLocation = Point(position().x, 0, 0);
@@ -2085,8 +2169,7 @@ bool SocialForcesAgent::tenthAI(const SteerLib::AgentInitialConditions & initial
 
 	// separate further into quadrants (y)
 	
-	// goes to right
-	
+	// goes to right	
 	if (initialConditions.direction.x == -1) {
 		if (position().x > 0) {
 
@@ -2154,13 +2237,6 @@ bool SocialForcesAgent::tenthAI(const SteerLib::AgentInitialConditions & initial
 
 // maze
 bool SocialForcesAgent::eleventhAI() {
-	// should run astar here
-
-	//return AStar();
-
-	// return runLongTermPlanning();
-
-
 	 SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
 	 _goalQueue.pop();
 	 SteerLib::AgentGoalInfo goal;
@@ -2191,43 +2267,8 @@ bool SocialForcesAgent::eleventhAI() {
 	 goal.targetLocation = Point(-90, 0, 15);
 	 _goalQueue.push(goal);
 	 _goalQueue.push(goalPoint);
+
 	 return runLongTermPlanning();
-
-	/*
-	std::vector<Util::Point> agentPath;
-	
-	agentPath.push_back(Point(-60, 0, position().z));
-	agentPath.push_back(Point(-70, 0, 60));
-	agentPath.push_back(Point(55, 0, 60));
-	agentPath.push_back(Point(55, 0, 20));
-	agentPath.push_back(Point(-40, 0, 20));
-	agentPath.push_back(Point(-40, 0, -10));
-	agentPath.push_back(Point(10, 0, -10));
-	agentPath.push_back(Point(10, 0, -65));
-	agentPath.push_back(Point(-35, 0, -65));
-	
-	
-	for (int i = 0; i < agentPath.size(); i++)
-	{
-		_midTermPath.push_back(agentPath.at(i));
-		if ((i % FURTHEST_LOCAL_TARGET_DISTANCE) == 0)
-		{
-			_waypoints.push_back(agentPath.at(i));
-		}
-	}
-	if (agentPath.size()>0)
-	{
-		for (int i = 1; i<agentPath.size(); ++i)
-		{
-			Util::DrawLib::drawLine(agentPath[i - 1], agentPath[i], gYellow);
-		}
-		//Util::DrawLib::drawCircle(__path[__path.size()-1], Util::Color(0.0f, 1.0f, 0.0f));
-	}
-
-	return true;
-	*/
-
-	//return AStar();
 }
 
 bool SocialForcesAgent::AStar()
