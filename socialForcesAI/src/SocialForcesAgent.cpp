@@ -870,7 +870,7 @@ void SocialForcesAgent::draw()
 
 		egress			-->		needs work				--> TERRIBLE
 		ingress			-->		NEED TO FINISH			--> N/A 
-		crowd			-->		DONE/could be better	--> BAD
+		crowd			-->		DONE/could be better	--> meh
 		*office			-->		LOST CAUSE				--> TERRIBLE
 		roundabout		-->		DONE					-->	good
 			NOTE: make sure speed is slow and ROUNDABOUT = true
@@ -879,7 +879,7 @@ void SocialForcesAgent::draw()
 		double squeeze	-->		DONE					-->	good
 		wall squeeze	-->		DONE					-->	good 
 		hallway			-->		DONE/could be better	-->	could be better
-		*maze			-->		LOST CAUSE				--> TERRIBLE
+		*maze			-->		DONE/could be better	--> could be better
 */
 /**********************************************/
 /**********************************************/
@@ -2395,8 +2395,6 @@ bool SocialForcesAgent::tenthAI(const SteerLib::AgentInitialConditions & initial
 }
 
 // maze
-// TODO 
-// I DONT UNDERSTAND WHY IT HAS SUCH A BAD SCORE
 bool SocialForcesAgent::eleventhAI() {
 	// should run astar here
 
