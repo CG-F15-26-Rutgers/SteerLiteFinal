@@ -134,6 +134,8 @@ private:
 	bool ninthAI(const SteerLib::AgentInitialConditions & initialConditions);
 	bool tenthAI(const SteerLib::AgentInitialConditions & initialConditions);
 	bool eleventhAI();
+	bool twelfthAI();
+	bool thirteenthAI();
 	bool LoadAI(std::string testcase);
 
 
