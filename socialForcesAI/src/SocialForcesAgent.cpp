@@ -1405,22 +1405,12 @@ bool SocialForcesAgent::sixthAI() {
 	_goalQueue.pop();
 	SteerLib::AgentGoalInfo goal;
 
-
-	if (position().x < 50) {
-		goal.targetLocation = Point(25, 0, 0);
-		_goalQueue.push(goal);
-	}
-	else {
-		goal.targetLocation = Point(45, 0, 0);
-		_goalQueue.push(goal);
-	}
-
+	goal.targetLocation = Point(30, 0, 0);
+	_goalQueue.push(goal);
+	goal.targetLocation = Point(-50, 0, 0);
+	_goalQueue.push(goal);
 	_goalQueue.push(originalGoal);
 
-
-	// z --> L/R
-	// x --> U/D
-	
 	return runLongTermPlanning();
 }
 
@@ -1629,6 +1619,8 @@ bool SocialForcesAgent::ninthAI(const SteerLib::AgentInitialConditions & initial
 
 // hallway-two-way
 bool SocialForcesAgent::tenthAI(const SteerLib::AgentInitialConditions & initialConditions) {
+	return AStar();
+
 	// get direction of agents
 	// move them to one side
 	// proceed
