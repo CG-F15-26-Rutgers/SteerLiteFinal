@@ -1709,38 +1709,7 @@ bool SocialForcesAgent::tenthAI(const SteerLib::AgentInitialConditions & initial
 
 // maze
 bool SocialForcesAgent::eleventhAI() {
-	 SteerLib::AgentGoalInfo goalPoint = _goalQueue.front();
-	 _goalQueue.pop();
-	 SteerLib::AgentGoalInfo goal;
-	 goal.targetLocation = Point(-60, 0, position().z);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(-70, 0, 60);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(55, 0, 60);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(55, 0, 20);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(-40, 0, 20);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(-40, 0, -10);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(20, 0, -10);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(15, 0, -65);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(-20, 0, -65);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(-20, 0, -50);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(-65, 0, -50);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(-65, 0, 25);
-	 _goalQueue.push(goal);
-	 goal.targetLocation = Point(-90, 0, 25);
-	 _goalQueue.push(goal);
-	 _goalQueue.push(goalPoint);
-
-	 return runLongTermPlanning();
+	return AStar();
 }
 
 // search-2
