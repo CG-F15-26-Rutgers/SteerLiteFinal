@@ -136,37 +136,37 @@ void SocialForcesAgent::reset(const SteerLib::AgentInitialConditions & initialCo
 		}
 	}
 
-	if (testcase == "plane_egress") {
+	if (testcase == "plane_egress" || testcase == "plane_egress.xml") {
 		firstAI(initialConditions);
 	}
-	else if (testcase == "plane_ingress") {
+	else if (testcase == "plane_ingress" || testcase == "plane_ingress.xml") {
 		secondAI();
 	}
-	else if (testcase == "crowd_crossing") {
+	else if (testcase == "crowd_crossing" || testcase == "crowd_crossing.xml") {
 		thirdAI(initialConditions);
 	}
-	else if (testcase == "office-complex") {
+	else if (testcase == "office-complex" || testcase == "office-complex.xml") {
 		fourthAI();
 	}
-	else if (testcase == "hallway-four-way-rounded-roundabout" || testcase == "hallway-four-way") {
+	else if (testcase == "hallway-four-way-rounded-roundabout" || testcase == "hallway-four-way-rounded-roundabout.xml") {
 		fifthAI(initialConditions);
 	}
-	else if (testcase == "bottleneck-squeeze") {
+	else if (testcase == "bottleneck-squeeze" || testcase == "bottleneck-squeeze.xml") {
 		sixthAI();
 	}
-	else if (testcase == "doorway-two-way") {
+	else if (testcase == "doorway-two-way" || testcase == "doorway-two-way.xml") {
 		seventhAI(initialConditions);
 	}
-	else if (testcase == "double-squeeze") {
+	else if (testcase == "double-squeeze" || testcase == "double-squeeze.xml") {
 		eighthAI(initialConditions);
 	}
-	else if (testcase == "wall-squeeze") {
+	else if (testcase == "wall-squeeze" || testcase == "wall-squeeze.xml") {
 		ninthAI(initialConditions);
 	}
-	else if (testcase == "hallway-two-way") {
+	else if (testcase == "hallway-two-way" || testcase == "hallway-two-way.xml") {
 		tenthAI(initialConditions);
 	}
-	else if (testcase == "maze") {
+	else if (testcase == "maze" || testcase == "maze.xml") {
 		eleventhAI();
 	}
 	else if (testcase == "search-1"){
