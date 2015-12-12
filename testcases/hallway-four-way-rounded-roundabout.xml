@@ -21,60 +21,50 @@
     </worldBounds>
   </header>
   
-
-  <suggestedCameraView>
-    <position> <x>0</x> <y>50</y> <z>-30</z> </position>
-    <lookat> <x>0</x> <y>0</y> <z>0</z> </lookat>
-    <up> <x>0</x> <y>1</y> <z>0</z> </up>
-    <targetTime>.1</targetTime>
-  </suggestedCameraView>
-
-
   <suggestedCameraView>
     <position> <x>0</x> <y>100</y> <z>-30</z> </position>
     <lookat> <x>0</x> <y>0</y> <z>0</z> </lookat>
     <up> <x>0</x> <y>1</y> <z>0</z> </up>
-    <targetTime>.1</targetTime>
+    <fovy>45</fovy>
   </suggestedCameraView>
 
-  <!-- TOP RIGHT BOX -->
-  <polygonObstacle isClosed="true">
-    <vertex> <x>-8.0</x> <y>0.0</y> <z>100.0</z> </vertex>
-    <vertex> <x>-100.0</x> <y>0.0</y> <z>100.0</z> </vertex>
-    <vertex> <x>-100.0</x> <y>0.0</y> <z>8.0</z> </vertex>
-    <vertex> <x>-12.0</x> <y>0.0</y> <z>8.0</z> </vertex>
-    <vertex> <x>-8.0</x> <y>0.0</y> <z>12.0</z> </vertex>
-  </polygonObstacle>
+  <obstacle>
+    <xmin>-100</xmin>
+    <xmax>-8.01</xmax>
+    <ymin>0</ymin>
+    <ymax>1</ymax>
+    <zmin>8.01</zmin>
+    <zmax>100</zmax>
+  </obstacle>
+  
+  <obstacle>
+    <xmin>-100</xmin>
+    <xmax>-8.01</xmax>
+    <ymin>0</ymin>
+    <ymax>1</ymax>
+    <zmin>-100</zmin>
+    <zmax>-8.01</zmax>
+  </obstacle>
 
-  <!-- BOTTOM LEFT BOX -->
-  <polygonObstacle isClosed="true">
-    <vertex> <x>8.0</x> <y>0.0</y> <z>-100.0</z> </vertex>
-    <vertex> <x>100.0</x> <y>0.0</y> <z>-100.0</z> </vertex>
-    <vertex> <x>100.0</x> <y>0.0</y> <z>-8.0</z> </vertex>
-    <vertex> <x>12.0</x> <y>0.0</y> <z>-8.0</z> </vertex>
-    <vertex> <x>8.0</x> <y>0.0</y> <z>-12.0</z> </vertex>
-  </polygonObstacle>
+  <obstacle>
+    <xmin>8.01</xmin>
+    <xmax>100</xmax>
+    <ymin>0</ymin>
+    <ymax>1</ymax>
+    <zmin>-100</zmin>
+    <zmax>-8</zmax>
+  </obstacle>
 
-  <!-- BOTTOM RIGHT BOX -->
-  <polygonObstacle isClosed="true">
-    <vertex> <x>-8.0</x> <y>0.0</y> <z>-100.0</z> </vertex>
-    <vertex> <x>-100.0</x> <y>0.0</y> <z>-100.0</z> </vertex>
-    <vertex> <x>-100.0</x> <y>0.0</y> <z>-8.0</z> </vertex>
-    <vertex> <x>-12.0</x> <y>0.0</y> <z>-8.0</z> </vertex>
-    <vertex> <x>-8.0</x> <y>0.0</y> <z>-12.0</z> </vertex>
-  </polygonObstacle>
+  <obstacle>
+    <xmin>8.01</xmin>
+    <xmax>100</xmax>
+    <ymin>0</ymin>
+    <ymax>1</ymax>
+    <zmin>8.01</zmin>
+    <zmax>100</zmax>
+  </obstacle>
 
 
-  <!-- TOP LEFT BOX -->
-  <polygonObstacle isClosed="true">
-    <vertex> <x>8.0</x> <y>0.0</y> <z>100.0</z> </vertex>
-    <vertex> <x>100.0</x> <y>0.0</y> <z>100.0</z> </vertex>
-    <vertex> <x>100.0</x> <y>0.0</y> <z>8.0</z> </vertex>
-    <vertex> <x>12.0</x> <y>0.0</y> <z>8.0</z> </vertex>
-    <vertex> <x>8.0</x> <y>0.0</y> <z>12.0</z> </vertex>
-  </polygonObstacle>
-
-  <!-- OBSTACLE -->
   <polygonObstacle isClosed="true">
     <vertex> <x>-2.0</x> <y>0.0</y> <z>4.0</z> </vertex>
     <vertex> <x>2.0</x> <y>0.0</y> <z>4.0</z> </vertex>
@@ -84,7 +74,6 @@
     <vertex> <x>-4.0</x> <y>0.0</y> <z>0.0</z> </vertex>
   </polygonObstacle>
 
-  <!-- going to left -->
   <agentRegion>
     <numAgents>100</numAgents>
     <regionBounds>
@@ -110,7 +99,6 @@
 
   </agentRegion>
 
-  <!-- going right -->
   <agentRegion>
     <numAgents>100</numAgents>
     <regionBounds>
@@ -136,7 +124,6 @@
 
   </agentRegion>
   
-    <!-- going down -->
     <agentRegion>
     <numAgents>100</numAgents>
     <regionBounds>
@@ -162,7 +149,6 @@
 
   </agentRegion>
 
-  <!-- going up -->
     <agentRegion>
     <numAgents>100</numAgents>
     <regionBounds>
@@ -189,3 +175,4 @@
   </agentRegion>
 
 </SteerBenchTestCase>
+
