@@ -60,9 +60,9 @@
       <!-- Position of the openGL window in y -->
       <windowPositionY>0</windowPositionY>
       <!-- Width of the openGL window in pixels -->
-      <windowSizeX>1280</windowSizeX>
+      <windowSizeX>854</windowSizeX>
       <!-- Height of the openGL window in pixels -->
-      <windowSizeY>720</windowSizeY>
+      <windowSizeY>480</windowSizeY>
       <!-- Title of the openGL window -->
       <windowTitle>SteerSim: Group 26</windowTitle>
     </glfw>
